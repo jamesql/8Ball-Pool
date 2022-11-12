@@ -1,5 +1,3 @@
-/// <reference path="../util/@types/global.d.ts" />
-
 // @ts-ignore 
 
 class ClientSocket {
