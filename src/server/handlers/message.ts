@@ -1,12 +1,17 @@
+/// <reference path="../../util/@types/global.d.ts" />
+
 import { IncomingMessage } from "http";
 import * as ws from "ws";
 import { OPCodes } from "../util/WSValues";
 
-export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: IncomingMessage, payload: ws.Data) => {
+// data: ws.RawData, isBinary: boolean
+export default (async (skt: Socket.SocketClient, payload: ws.RawData, isBinary: boolean) => {
     let data;
 
     try { data = JSON.parse(payload.toString()); }
-    catch { data = null }
+    catch(e) { data = null; console.log(e); }
+
+    console.log(data);
 
     if (data === null) return skt.close();
 

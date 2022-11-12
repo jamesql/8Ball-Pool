@@ -12,3 +12,5 @@ Object.defineProperty(WebSocket.prototype, "sendAsync", {
 		);
 	}
 });
+
+export default null;

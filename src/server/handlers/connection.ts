@@ -1,3 +1,5 @@
+/// <reference path="../../util/@types/global.d.ts" />
+
 import { IncomingMessage } from "http";
 import * as ws from "ws";
 import { HEARTBEAT_INTERVAL, OPCodes } from "../util/WSValues";
