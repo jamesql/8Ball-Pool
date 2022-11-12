@@ -1,8 +1,11 @@
-import WebSocket from "ws";
+export {};
 
 declare global {
         namespace Socket {
-            interface SocketServer extends WebSocket.Server {
+            type Server = import("ws").Server;
+            type WebSocket = import("ws");
+            
+            interface SocketServer extends Server {
                 clients: Set<SocketClient>;
             }
 
