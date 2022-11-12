@@ -1,0 +1,28 @@
+{
+  "name": "1",
+  "version": "1.0.0",
+  "description": "8-Ball pool game",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesql/8Ball-Pool.git"
+  },
+  "author": "James Ash",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jamesql/8Ball-Pool/issues"
+  },
+  "homepage": "https://github.com/jamesql/8Ball-Pool#readme",
+  "dependencies": {
+    "@types/ws": "^8.5.3",
+    "http": "0.0.1-security",
+    "https": "^1.0.0",
+    "ws": "^8.10.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.9"
+  }
+}
