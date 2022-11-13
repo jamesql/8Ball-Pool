@@ -1,5 +1,6 @@
 import { Vector } from "./Vector2D";
 import { Buttons } from './Buttons';
+import { Keys } from './Keys';
 
 export class Input {
     static _mouseX: number = 0;
@@ -20,7 +21,7 @@ export class Input {
 
     // todo when game input is implemented
     public static isKeyDown(kb: KeyboardEvent) {
-
+        
     }
 
     public static getMousePosition(): Vector {

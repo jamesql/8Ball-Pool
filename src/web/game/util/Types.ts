@@ -10,3 +10,9 @@ export interface _button {
     onClick: () => void,
     active: boolean
 };
+
+export interface _key {
+    key: string,
+    onDown: () => void,
+    active: boolean
+}
