@@ -1,2 +1,4 @@
-tsc ./src/web/game/Game.ts --esModuleInterop --outFile ./src/web/public/scripts/game.js --module "amd"
+@echo off
+title Building Game......
+npx webpack
 pause

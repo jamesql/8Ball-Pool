@@ -3,7 +3,7 @@ import { _graphics } from './util/Types';
 
 export class Game {
 
-    canvas: HTMLCanvasElement = <HTMLCanvasElement> Document.prototype.getElementById("game");
+    canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("game");
     context: CanvasRenderingContext2D = this.canvas.getContext("2d");
 
     _table: Table;

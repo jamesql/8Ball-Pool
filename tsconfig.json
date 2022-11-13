@@ -33,7 +33,7 @@
       "skipLibCheck": true,
       "forceConsistentCasingInFileNames": true,
       "isolatedModules": true,
-      "noEmit": true,
+      "noEmit": false,
       "newLine": "lf",
       "strict": false
     },
