@@ -5,12 +5,24 @@ import {Input} from "./util/Input";
 
 export class Game {
 
-    _table: Table;
-    _menu: Menu;
+    static _table: Table;
+    static _menu: Menu;
+    static _self: Game;
 
     constructor() {
+
+        if (Game._self) {
+            return Game._self;
+        } else {
+            Game._self = this;
+        }
+
         Input.init();
-        this._menu = new Menu();
+        Game._menu = new Menu();
+    }
+
+    public static init(): void {
+        Game._table = new Table();
     }
 
 

@@ -1,6 +1,7 @@
 import { Canvas } from './Graphics';
 import { getCornerPoints } from './util/UtilFunctions';
 import { Buttons } from './util/Buttons';
+import { Game } from './Game';
 
 export class Menu {
 
@@ -14,7 +15,8 @@ export class Menu {
         Buttons.createButton("startGame", points, this.startGame, true);
     }
 
-    startGame() {
-        console.log("BUTTON CLICKED");
+    startGame(): void {
+        Canvas.clear();
+        Game.init();
     }
 }

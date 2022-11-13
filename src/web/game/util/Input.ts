@@ -9,19 +9,17 @@ export class Input {
     public static init(): void {
         window.addEventListener("keydown", this.isKeyDown);
         window.addEventListener("mousemove", (e: MouseEvent) => {
-            this._mouseX = e.clientX;   // get mouse x position relative to the window      
-            this._mouseY = e.clientY;   // get mouse y position relative to the window
+            this._mouseX = e.clientX;      
+            this._mouseY = e.clientY;   
         });
         window.addEventListener("mousedown", (e: MouseEvent) => {
             let v = this.getMousePosition();
             Buttons.mouseClick(v);
-            console.log("mouse click");
         });
     }   
 
-    // todo when game input is implemented
     public static isKeyDown(kb: KeyboardEvent) {
-        
+        Keys.keyboardClick(kb.key);
     }
 
     public static getMousePosition(): Vector {
