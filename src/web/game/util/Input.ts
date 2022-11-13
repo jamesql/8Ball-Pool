@@ -12,6 +12,7 @@ export class Input {
         });
     }   
 
+    // todo when game input is implemented
     public static isKeyDown(kb: KeyboardEvent) {
 
     }

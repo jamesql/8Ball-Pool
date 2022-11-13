@@ -1,15 +1,14 @@
 import Table from "./Table";
 import { _graphics } from './util/Types';
+import { Menu } from './Menu';
 
 export class Game {
 
-    canvas: HTMLCanvasElement = <HTMLCanvasElement> document.getElementById("game");
-    context: CanvasRenderingContext2D = this.canvas.getContext("2d");
-
     _table: Table;
+    _menu: Menu;
 
     constructor() {
-        this._table = new Table({ canvas: this.canvas, context: this.context });
+        this._menu = new Menu();
     }
 
 

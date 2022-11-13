@@ -1,5 +1,6 @@
 // @ts-ignore 
 
+// TODO: move this to the webpack compiler so it can be easier used within the game
 class ClientSocket {
     static socket: WebSocket;
     static seq: number;
