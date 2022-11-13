@@ -18,11 +18,13 @@
   "homepage": "https://github.com/jamesql/8Ball-Pool#readme",
   "dependencies": {
     "@types/ws": "^8.5.3",
+    "amd-loader": "^0.0.8",
     "http": "0.0.1-security",
     "https": "^1.0.0",
     "ws": "^8.10.0"
   },
   "devDependencies": {
-    "@types/node": "^18.11.9"
+    "@types/node": "^18.11.9",
+    "webpack": "^5.75.0"
   }
 }
