@@ -1,4 +1,5 @@
 import { Vector } from "./Vector2D";
+import { Buttons } from './Buttons';
 
 export class Input {
     static _mouseX: number = 0;
@@ -9,6 +10,11 @@ export class Input {
         window.addEventListener("mousemove", (e: MouseEvent) => {
             this._mouseX = e.clientX;   // get mouse x position relative to the window      
             this._mouseY = e.clientY;   // get mouse y position relative to the window
+        });
+        window.addEventListener("mousedown", (e: MouseEvent) => {
+            let v = this.getMousePosition();
+            Buttons.mouseClick(v);
+            console.log("mouse click");
         });
     }   
 

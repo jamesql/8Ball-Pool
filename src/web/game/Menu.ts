@@ -1,20 +1,20 @@
-import { _graphics } from './util/Types';
 import { Canvas } from './Graphics';
+import { getCornerPoints } from './util/UtilFunctions';
+import { Buttons } from './util/Buttons';
+
 export class Menu {
 
-    _g: _graphics = Canvas.getGraphics();
-
     constructor() {
-        this._g.context.fillStyle = "black";
-        this._g.context.fillRect(0, 0, 500, 500);
+        Canvas.drawRect(0, 0, 500, 500, 'red');
+        // create three clickable buttons
+        Canvas.drawRect(100, 100, 300, 50, 'white');
+        Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
 
-        // inside the canvas create a button with the text "Start Game"
-        this._g.context.fillStyle = "white";
-        this._g.context.fillRect(200, 200, 100, 50);
-        this._g.context.fillStyle = "black";
-        this._g.context.font = "20px Arial";
-        this._g.context.fillText("Start Game", 210, 230);
+        let points = getCornerPoints(100,100,300,50);
+        Buttons.createButton("startGame", points, this.startGame, true);
+    }
 
-        
+    startGame() {
+        console.log("BUTTON CLICKED");
     }
 }
