@@ -3,6 +3,7 @@ import { _graphics } from './util/Types';
 import { Menu } from './Menu';
 import {Input} from "./util/Input";
 import "./client";
+import EventLoop from "./util/EventLoop";
 
 export class Game {
 
@@ -22,6 +23,7 @@ export class Game {
     }
 
     public static init(): void {
+        new EventLoop();
         Game._table = new Table();
     }
 

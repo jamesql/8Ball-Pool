@@ -24,4 +24,8 @@ export class Ball implements Sprite {
         throw new Error('Method not implemented.');
     }
 
+    public getPosition() : Vector {
+        return this.location;
+    }
+
 }

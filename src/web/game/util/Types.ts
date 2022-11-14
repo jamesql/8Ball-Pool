@@ -22,4 +22,11 @@ export interface _asset {
     src: string
 }
 
+export interface _listener {
+    id: string,
+    function: () => void,
+    active: boolean
+}
+
 export type ballType = "cue" | "solid" | "stripe" | "eight";
+export type playerColor = "stripe" | "solid" | "none";
