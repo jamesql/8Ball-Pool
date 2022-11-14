@@ -21,3 +21,5 @@ export interface _asset {
     id: string,
     src: string
 }
+
+export type ballType = "cue" | "solid" | "stripe" | "eight";

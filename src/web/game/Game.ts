@@ -2,6 +2,7 @@ import Table from "./Table";
 import { _graphics } from './util/Types';
 import { Menu } from './Menu';
 import {Input} from "./util/Input";
+import "./client";
 
 export class Game {
 

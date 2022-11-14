@@ -1,1 +1,5 @@
-export default null;
+export class Pocket {
+    constructor() {
+        console.log("Pocket created");
+    }
+}

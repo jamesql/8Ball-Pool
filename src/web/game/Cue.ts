@@ -1,1 +1,5 @@
-export default null;
+export class Cue {
+    constructor() {
+        console.log("Cue created");
+    }
+}
