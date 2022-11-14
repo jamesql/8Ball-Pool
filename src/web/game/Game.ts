@@ -7,14 +7,13 @@ export class Game {
 
     static _table: Table;
     static _menu: Menu;
-    static _self: Game;
+    static _instance: Game;
 
     constructor() {
-
-        if (Game._self) {
-            return Game._self;
+        if (Game._instance) {
+            return Game._instance;
         } else {
-            Game._self = this;
+            Game._instance = this;
         }
 
         Input.init();

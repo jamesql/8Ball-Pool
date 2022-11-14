@@ -16,3 +16,8 @@ export interface _key {
     onDown: () => void,
     active: boolean
 }
+
+export interface _asset {
+    id: string,
+    src: string
+}
