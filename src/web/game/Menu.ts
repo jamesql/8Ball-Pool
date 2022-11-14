@@ -8,8 +8,7 @@ export class Menu {
     constructor() {
         
 
-        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 800, 600);
-        // create three clickable buttons
+        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
         Canvas.drawRect(100, 100, 300, 50, 'white');
         Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
 

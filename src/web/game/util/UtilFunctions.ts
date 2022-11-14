@@ -12,8 +12,5 @@ export function getCornerPoints(x: number, y: number, width: number, height: num
 export function getImage(src: string): HTMLImageElement {
     let image = new Image();
     image.src = src;
-    image.addEventListener('load', () => {
-        console.log('Image loaded: ' + src);
-    });
     return image;
 }

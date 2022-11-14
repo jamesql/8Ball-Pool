@@ -6,8 +6,8 @@ export class Canvas {
         static context: CanvasRenderingContext2D = this.canvas.getContext("2d");
     
         static {
-            this.canvas.width = 500;
-            this.canvas.height = 500;
+            this.canvas.width = 1600;
+            this.canvas.height = 900;
         }
     
         static getGraphics(): _graphics {
