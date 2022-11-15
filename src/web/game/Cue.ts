@@ -4,6 +4,7 @@ import { getImage } from "./util/UtilFunctions";
 import { Vector } from "./util/Vector2D";
 import { Input } from "./util/Input";
 import EventLoop from "./util/EventLoop";
+import { _listener } from './util/Types';
 
 export class Cue implements Sprite {
     visible: boolean;
@@ -13,10 +14,16 @@ export class Cue implements Sprite {
     _radius: number;
     static _cueBallPosition: Vector = new Vector(500,500);
     _power: number;
+    _event: _listener;
 
     constructor() {
         console.log("Cue created");
         this.init();
+    }
+
+    public setVisible(_visible: boolean) : void {
+        this.visible = _visible;
+        EventLoop.setListener(this._event, _visible);
     }
 
     show(): void {
@@ -30,7 +37,7 @@ export class Cue implements Sprite {
         this.visible = true;
         this.location = new Vector(Input._mouseX, Input._mouseY);
         this.show();
-        EventLoop.addListener({id: "cue", function: this.update, active: true});
+        this._event = EventLoop.addListener({id: "cue", function: this.update, active: true});
     }
     update(): void {
         let x = Input._mouseX;
@@ -41,7 +48,6 @@ export class Cue implements Sprite {
         this.location = new Vector(x, y);
         let r: number = Math.atan2(y-cueball_y, x-cueball_x);
 
-        //Canvas.drawImageWithRotation(getImage("./assets/cue.png"), cueball_x, cueball_y, 700, 700, r);
         Canvas.drawImageRotationOrigin(getImage("./assets/cue.png"), cueball_x, cueball_y, 700, 700, r, 0, 0);
     }
 }

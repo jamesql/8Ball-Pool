@@ -23,8 +23,9 @@ export default class EventLoop {
         return this._instance;
     }
 
-    public static addListener(listener: _listener): void {
+    public static addListener(listener: _listener): _listener {
         this._listeners.push(listener);
+        return listener;
     }
 
     public static setListener(listener: _listener, active: boolean): void {
