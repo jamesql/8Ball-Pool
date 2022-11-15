@@ -11,6 +11,9 @@ export class Ball implements Sprite {
     location: Vector;
     type: ballType;
     _event: _listener;
+    _velocity: Vector = new Vector(0,0);
+    _moving: boolean = false;
+
     private static R: number = 18;
 
     constructor(_location: Vector, _type: ballType) {
@@ -41,6 +44,11 @@ export class Ball implements Sprite {
         }
     }
 
+    public setVelocity(_velocity: Vector) : void {
+        this._velocity = _velocity;
+        this._moving = true;
+    }
+
     show(): void {
         Canvas.drawCircle(this.location.getX(), this.location.getY(), Ball.R, this.getColorBasedOnType());
     }
@@ -53,6 +61,12 @@ export class Ball implements Sprite {
     update(self: any): void {
         let _self: Ball = <Ball>self;
         let v: Vector = _self.location;
+
+        if (_self._moving) {
+            v.add(_self._velocity);
+            _self.location = v;
+        }
+
         Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
     }
 

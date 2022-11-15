@@ -7,6 +7,7 @@ import { Cue } from './Cue';
 import { Sprite } from './util/Sprite';
 import { Vector } from './util/Vector2D';
 import EventLoop from './util/EventLoop';
+import { _listener } from './util/Types';
 
 export default class Table implements Sprite {
     visible: boolean;
@@ -18,6 +19,7 @@ export default class Table implements Sprite {
     private _players: Player[] = [];
     private _currentPlayer: Player;
     private _cue: Cue;
+    private _event: _listener;
 
 
     constructor() {
@@ -34,8 +36,13 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(800, 700), "eight"));
     }
 
+    public getCueBall() : Ball {
+        return this._balls[0]; // should change this to be more dynamic
+    }
+
     setVisible(_visible: boolean): void {
-        throw new Error('Method not implemented.');
+        this.visible = _visible;
+        EventLoop.setListener(this._event, _visible);
     }
 
     show(): void {
@@ -45,12 +52,11 @@ export default class Table implements Sprite {
         this.image = getImage("./assets/pool_table.jpg");
         this.visible = true;
         this.show();
-        EventLoop.addListener({id: "table", function: this.update, active: true, self: this});
+        this._event = EventLoop.addListener({id: "table", function: this.update, active: true, self: this});
     }
     update(self: any): void {
         Canvas.clear();
         Canvas.drawImage(getImage("./assets/pool_table.jpg"), 0, 0, 1600, 900);
-        console.log("test");
     }
 
 

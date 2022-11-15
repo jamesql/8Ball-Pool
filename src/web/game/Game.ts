@@ -30,7 +30,10 @@ export class Game {
         Game.init();
     }
 
-
+    public static getTable(): Table {
+        return Game._table;
+    }
+    
 };
 
 new Game();

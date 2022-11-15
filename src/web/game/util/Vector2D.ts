@@ -31,6 +31,11 @@ export class Vector {
         this.y += change;
     }
 
+    public add(v: Vector) : void {
+        this.x += v.getX();
+        this.y += v.getY();
+    }
+
     public setX(n: number) {
         this.x = n;
     }

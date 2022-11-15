@@ -6,6 +6,8 @@ import { Input } from "./util/Input";
 import EventLoop from "./util/EventLoop";
 import { _listener, _key } from './util/Types';
 import { Keys } from "./util/Keys";
+import { Ball } from "./Ball";
+import { Game } from "./Game";
 
 export class Cue implements Sprite {
     visible: boolean;
@@ -19,6 +21,7 @@ export class Cue implements Sprite {
     _relative: Vector;
     _powerUp: _key;
     _powerDown: _key;
+    _angle: number;
 
     constructor() {
         console.log("Cue created");
@@ -33,10 +36,12 @@ export class Cue implements Sprite {
 
     public shoot(self: any) {
         let _this: Cue = self as Cue;
+        let _velocity = new Vector(_this._power * Math.cos(_this._angle), _this._power * Math.sin(_this._angle));
         _this._power = 0;
         _this._tipPosition = new Vector(_this.location.getX() + _this._relative.getX(), _this.location.getY() + _this._relative.getY());
         _this._relative = new Vector(0,0);
-
+        let cueBall: Ball = Game.getTable().getCueBall();
+        cueBall.setVelocity(_velocity);
     }
 
     public resetCue() {
@@ -48,7 +53,7 @@ export class Cue implements Sprite {
     public increasePower(_obj: any) {
         let _this: Cue = _obj as Cue;
         if(!_this.isMaxPower()) {
-        _this._power += 0.1;
+        _this._power += 2.5;
         _this._relative.addX(-10);
         _this._relative.addY(-10);
         }
@@ -57,7 +62,7 @@ export class Cue implements Sprite {
     public decreasePower(_obj: any) {
         let _this: Cue = _obj as Cue;
         if(!_this.isMinPower()) {
-        _this._power -= 0.1;
+        _this._power -= 2.5;
         console.log(_this._power);
         _this._relative.addY(10);
         _this._relative.addX(10);
@@ -77,7 +82,7 @@ export class Cue implements Sprite {
     }
 
     public isMaxPower() {
-        return this._power >= .9;
+        return this._power >= 25;
     }
 
     show(): void {
@@ -101,8 +106,8 @@ export class Cue implements Sprite {
         let cueball_y = Cue._cueBallPosition.getY();
 
         this.location = new Vector(x, y);
-        let r: number = Math.atan2(y-cueball_y, x-cueball_x);
+        _self._angle = Math.atan2(y-cueball_y, x-cueball_x);
 
-        Canvas.drawImageRotationOrigin(_self.image, cueball_x, cueball_y, 700, 700, r, _self._relative.getX(), _self._relative.getY());
+        Canvas.drawImageRotationOrigin(_self.image, cueball_x, cueball_y, 700, 700, _self._angle, _self._relative.getX(), _self._relative.getY());
     }
 }
