@@ -13,8 +13,9 @@ export interface _button {
 
 export interface _key {
     key: string,
-    onDown: () => void,
-    active: boolean
+    onDown: (any) => void,
+    active: boolean,
+    obj: any
 }
 
 export interface _asset {

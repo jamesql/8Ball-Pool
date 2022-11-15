@@ -36,6 +36,6 @@ export class Keys {
 
     public static keyboardClick(keyString: string) {
         let _k = Keys.getKey(keyString);
-        if (_k) _k.onDown();
+        if (_k) _k.onDown(_k.obj);
     }
 }
