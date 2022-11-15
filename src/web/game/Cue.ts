@@ -37,9 +37,9 @@ export class Cue implements Sprite {
         this.visible = true;
         this.location = new Vector(Input._mouseX, Input._mouseY);
         this.show();
-        this._event = EventLoop.addListener({id: "cue", function: this.update, active: true});
+        this._event = EventLoop.addListener({id: "cue", function: this.update, active: true, self: this});
     }
-    update(): void {
+    update(self: any): void {
         let x = Input._mouseX;
         let y = Input._mouseY;
         let cueball_x = Cue._cueBallPosition.getX();

@@ -4,19 +4,15 @@ import { Menu } from './Menu';
 import {Input} from "./util/Input";
 import "./client";
 import EventLoop from "./util/EventLoop";
+import { Buttons } from './util/Buttons';
+import { Keys } from './util/Keys';
 
 export class Game {
 
     static _table: Table;
     static _menu: Menu;
-    static _instance: Game;
 
     constructor() {
-        if (Game._instance) {
-            return Game._instance;
-        } else {
-            Game._instance = this;
-        }
 
         Input.init();
         Game._menu = new Menu();
@@ -25,6 +21,13 @@ export class Game {
     public static init(): void {
         new EventLoop();
         Game._table = new Table();
+    }
+
+    public static refresh(): void {
+        EventLoop.clear();
+        Buttons.clear();
+        Keys.clear();
+        Game.init();
     }
 
 

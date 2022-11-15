@@ -41,7 +41,7 @@ export default class EventLoop {
 
     public static run(): void {
         if (!this._running) return;
-        this._listeners.forEach(listener => listener.function());
+        this._listeners.forEach(listener => listener.function(listener.self));
     }
 
     public static setRunning(running: boolean): void {

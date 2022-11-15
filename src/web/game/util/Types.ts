@@ -24,8 +24,9 @@ export interface _asset {
 
 export interface _listener {
     id: string,
-    function: () => void,
+    function: (self: any) => void,
     active: boolean
+    self: any
 }
 
 export type ballType = "cue" | "solid" | "stripe" | "eight";

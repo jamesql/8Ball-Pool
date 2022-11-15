@@ -8,5 +8,5 @@ export interface Sprite {
     show(): void
     hide(): void
     init(): void
-    update(): void
+    update(self: any): void
 }

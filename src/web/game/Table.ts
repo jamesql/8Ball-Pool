@@ -24,6 +24,7 @@ export default class Table implements Sprite {
         console.log("Table created");
         this.init();
         this._cue = new Cue();
+        this._balls.push(new Ball(new Vector(500, 500), "cue"));
     }
 
     show(): void {
@@ -36,9 +37,9 @@ export default class Table implements Sprite {
         this.image = getImage("./assets/pool_table.jpg");
         this.visible = true;
         this.show();
-        EventLoop.addListener({id: "table", function: this.update, active: true});
+        EventLoop.addListener({id: "table", function: this.update, active: true, self: this});
     }
-    update(): void {
+    update(self: any): void {
         Canvas.clear();
         Canvas.drawImage(getImage("./assets/pool_table.jpg"), 0, 0, 1600, 900);
         console.log("test");
