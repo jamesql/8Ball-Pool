@@ -24,6 +24,10 @@ export default class Table implements Sprite {
         console.log("Table created");
         this.init();
         this._cue = new Cue();
+        this.rackBalls();
+    }
+
+    public rackBalls() {
         this._balls.push(new Ball(new Vector(500, 500), "cue"));
     }
 

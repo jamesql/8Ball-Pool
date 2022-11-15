@@ -19,6 +19,10 @@ export class Ball implements Sprite {
         this.init();
     }
 
+    public static getRadius() : number {
+        return Ball.R;
+    }
+
     public setVisible(_visible: boolean) : void {
         this.visible = _visible;
         EventLoop.setListener(this._event, _visible);
