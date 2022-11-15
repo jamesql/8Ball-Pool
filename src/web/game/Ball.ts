@@ -11,11 +11,11 @@ export class Ball implements Sprite {
     location: Vector;
     type: ballType;
     _event: _listener;
+    private static R: number = 18;
 
     constructor(_location: Vector, _type: ballType) {
         this.location = _location;
         this.type = _type;
-        this.image = this.getImageBasedOnType();
         this.init();
     }
 
@@ -24,26 +24,21 @@ export class Ball implements Sprite {
         EventLoop.setListener(this._event, _visible);
     }
 
-    public getImageBasedOnType(): HTMLImageElement {
-        switch (this.type) {
-            case "solid":
-                return new Image();
-            case "stripe":
-                return new Image();
+    public getColorBasedOnType() : string {
+        switch(this.type) {
             case "cue":
-                return getImage("./assets/cue_ball.png");
+                return "white";
+            case "solid":
+                return "red";
+            case "stripe":
+                return "blue";
             case "eight":
-                return new Image();
-            default:
-                return new Image();
+                return "black";
         }
     }
 
     show(): void {
-        Canvas.drawCircle(this.location.getX(), this.location.getY(), 15, "white");
-    }
-    hide(): void {
-        throw new Error('Method not implemented.');
+        Canvas.drawCircle(this.location.getX(), this.location.getY(), Ball.R, this.getColorBasedOnType());
     }
     init(): void {
         this.visible = true;
@@ -54,8 +49,7 @@ export class Ball implements Sprite {
     update(self: any): void {
         let _self: Ball = <Ball>self;
         let v: Vector = _self.location;
-        //Canvas.drawImage(_self.image, v.getX(), v.getY(), 50, 50);
-        Canvas.drawCircle(v.getX(), v.getY(), 18, "white");
+        Canvas.drawCircle(v.getX(), v.getY(), Ball.R, "white");
     }
 
     public getPosition() : Vector {

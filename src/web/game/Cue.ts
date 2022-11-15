@@ -29,9 +29,6 @@ export class Cue implements Sprite {
     show(): void {
         Canvas.drawImage(this.image, Input._mouseX, Input._mouseY, 700, 700);
     }
-    hide(): void {
-        throw new Error("Method not implemented.");
-    }
     init(): void {
         this.image = getImage("./assets/cue.png");
         this.visible = true;

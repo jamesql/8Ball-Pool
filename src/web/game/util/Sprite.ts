@@ -5,8 +5,8 @@ export interface Sprite {
     image: HTMLImageElement
     location: Vector
 
+    setVisible(_visible: boolean): void
     show(): void
-    hide(): void
     init(): void
     update(self: any): void
 }

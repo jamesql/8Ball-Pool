@@ -27,11 +27,12 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(500, 500), "cue"));
     }
 
+    setVisible(_visible: boolean): void {
+        throw new Error('Method not implemented.');
+    }
+
     show(): void {
         Canvas.drawImage(this.image, 0, 0, 1600, 900);
-    }
-    hide(): void {
-        this.visible = false;
     }
     init(): void {
         this.image = getImage("./assets/pool_table.jpg");
