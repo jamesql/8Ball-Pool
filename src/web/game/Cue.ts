@@ -31,9 +31,18 @@ export class Cue implements Sprite {
         EventLoop.setListener(this._event, _visible);
     }
 
-    public shoot() {
+    public shoot(self: any) {
+        let _this: Cue = self as Cue;
+        _this._power = 0;
+        _this._tipPosition = new Vector(_this.location.getX() + _this._relative.getX(), _this.location.getY() + _this._relative.getY());
+        _this._relative = new Vector(0,0);
+
+    }
+
+    public resetCue() {
+        this._relative = new Vector(-15,-15);
         this._power = 0;
-        this._tipPosition = new Vector(this.location.getX() + 15, this.location.getY() + 15);
+
     }
 
     public increasePower(_obj: any) {
@@ -82,6 +91,7 @@ export class Cue implements Sprite {
         this._event = EventLoop.addListener({id: "cue", function: this.update, active: true, self: this});
         Keys.addKey({key: "w", onDown: this.increasePower, active: true, obj: this});
         Keys.addKey({key: "s", onDown: this.decreasePower, active: true, obj: this});
+        Keys.addKey({key: "Enter", onDown: this.shoot, active: true, obj: this});
     }
     update(self: any): void {
         let _self: Cue = self as Cue;

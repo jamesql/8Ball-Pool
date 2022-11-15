@@ -53,7 +53,7 @@ export class Ball implements Sprite {
     update(self: any): void {
         let _self: Ball = <Ball>self;
         let v: Vector = _self.location;
-        Canvas.drawCircle(v.getX(), v.getY(), Ball.R, "white");
+        Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
     }
 
     public getPosition() : Vector {
