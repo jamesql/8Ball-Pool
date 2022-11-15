@@ -49,4 +49,19 @@ export class Canvas {
         static drawImage(image: HTMLImageElement, x: number, y: number, width: number, height: number) {
             this.context.drawImage(image, x, y, width, height);
         }
+
+        static drawImageWithRotation(image: HTMLImageElement, x: number, y: number, width: number, height: number, angle: number) {
+            this.context.save();
+            this.context.translate(x, y);
+            this.context.rotate(angle);
+            this.context.drawImage(image, -width / 2, -height / 2, width, height);
+            this.context.restore();
+        }
+
+        static drawImageRotationOrigin(image: HTMLImageElement, x: number, y: number, width: number, height: number, angle: number, originX: number, originY: number) {
+            this.context.transform(1, 0, 0, 1, x, y);
+            this.context.rotate(angle);
+            this.context.drawImage(image, -originX, -originY, width, height);
+            this.context.setTransform(1, 0, 0, 1, 0, 0); // reset
+        }
 };

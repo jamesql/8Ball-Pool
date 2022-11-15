@@ -11,7 +11,8 @@ export class Cue implements Sprite {
     location: Vector;
     _tipPosition: Vector;
     _radius: number;
-    _cueBallPosition: Vector;
+    static _cueBallPosition: Vector = new Vector(500,500);
+    _power: number;
 
     constructor() {
         console.log("Cue created");
@@ -27,10 +28,20 @@ export class Cue implements Sprite {
     init(): void {
         this.image = getImage("./assets/cue.png");
         this.visible = true;
+        this.location = new Vector(Input._mouseX, Input._mouseY);
         this.show();
         EventLoop.addListener({id: "cue", function: this.update, active: true});
     }
     update(): void {
-        Canvas.drawImage(getImage("./assets/cue.png"), Input._mouseX, Input._mouseY, 700, 700);
+        let x = Input._mouseX;
+        let y = Input._mouseY;
+        let cueball_x = Cue._cueBallPosition.getX();
+        let cueball_y = Cue._cueBallPosition.getY();
+
+        this.location = new Vector(x, y);
+        let r: number = Math.atan2(y-cueball_y, x-cueball_x);
+
+        //Canvas.drawImageWithRotation(getImage("./assets/cue.png"), cueball_x, cueball_y, 700, 700, r);
+        Canvas.drawImageRotationOrigin(getImage("./assets/cue.png"), cueball_x, cueball_y, 700, 700, r, 0, 0);
     }
 }
