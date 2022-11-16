@@ -6,6 +6,7 @@ import { getImage } from './util/UtilFunctions';
 import { Canvas } from './Graphics';
 import { Cue } from './Cue';
 import { Game } from './Game';
+import Table from './Table';
 
 export class Ball implements Sprite {
     visible: boolean;
@@ -47,6 +48,10 @@ export class Ball implements Sprite {
         }
     }
 
+    public equals(_b: Ball) : boolean {
+        return this.type === _b.type && this.location.equals(_b.location);
+    }
+
     public setVelocity(_velocity: Vector) : void {
         this._velocity = _velocity;
         this._moving = true;
@@ -64,16 +69,24 @@ export class Ball implements Sprite {
     update(self: any): void {
         let _self: Ball = <Ball>self;
         let v: Vector = _self.location;
+        let _t: Table = Game.getTable();
 
         if (_self._moving) {
             _self._velocity.scalarMultiply(1 - Ball.F);
             v.add(_self._velocity);
             _self.location = v;
 
+            _t.checkForCollisions(_self);
+
+            if (_t.isBallInPocket(_self)) {
+                _self._velocity = new Vector(0,0);
+                _self.setVisible(false);
+            }
+
             if (_self._velocity.getMagnitude() < 0.1) {
                 _self._moving = false;
                 _self._velocity = new Vector(0,0);
-                Game.getTable().getCue().resetCue();
+                _t.getCue().resetCue();
             }
 
         }

@@ -44,6 +44,22 @@ export default class Table implements Sprite {
         return this._balls[0]; // should change this to be more dynamic
     }
 
+    public isBallInPocket(_b: Ball): boolean {
+        return false;
+    }
+
+    public checkForCollisions(_b: Ball) : void {
+        // check for collisions with other balls
+        for (let i = 0; i < this._balls.length; i++) {
+            if (_b.equals(this._balls[i])) continue;
+            if (_b.location.distance(this._balls[i].location) <= 2 * Ball.getRadius()) {
+                // collision
+                console.log("collision");
+            }
+        }
+    }
+
+
     setVisible(_visible: boolean): void {
         this.visible = _visible;
         EventLoop.setListener(this._event, _visible);

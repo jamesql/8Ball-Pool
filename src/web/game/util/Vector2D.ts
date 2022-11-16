@@ -53,4 +53,12 @@ export class Vector {
         return Math.sqrt(this.x * this.x + this.y * this.y);
     }
 
+    public equals(v: Vector): boolean {
+        return this.x === v.getX() && this.y === v.getY();
+    }
+
+    public distance(v: Vector): number {
+        return Math.sqrt((this.x - v.getX()) * (this.x - v.getX()) + (this.y - v.getY()) * (this.y - v.getY()));
+    }
+
 }
