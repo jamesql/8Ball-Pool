@@ -13,7 +13,8 @@ export class Ball implements Sprite {
     _event: _listener;
     _velocity: Vector = new Vector(0,0);
     _moving: boolean = false;
-
+    
+    private static F: number = 0.018;
     private static R: number = 18;
 
     constructor(_location: Vector, _type: ballType) {

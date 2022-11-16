@@ -23,6 +23,8 @@ export class Cue implements Sprite {
     _powerDown: _key;
     _angle: number;
 
+    private static cueOffset = 2.36;
+
     constructor() {
         console.log("Cue created");
         this._relative = new Vector(-15,-15);
@@ -108,6 +110,6 @@ export class Cue implements Sprite {
         this.location = new Vector(x, y);
         _self._angle = Math.atan2(y-cueball_y, x-cueball_x);
 
-        Canvas.drawImageRotationOrigin(_self.image, cueball_x, cueball_y, 700, 700, _self._angle, _self._relative.getX(), _self._relative.getY());
+        Canvas.drawImageRotationOrigin(_self.image, cueball_x, cueball_y, 700, 700, _self._angle+Cue.cueOffset, _self._relative.getX(), _self._relative.getY());
     }
 }
