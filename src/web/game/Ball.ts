@@ -81,12 +81,14 @@ export class Ball implements Sprite {
             if (_t.isBallInPocket(_self)) {
                 _self._velocity = new Vector(0,0);
                 _self.setVisible(false);
+                // send to game logic
             }
 
             if (_self._velocity.getMagnitude() < 0.1) {
                 _self._moving = false;
                 _self._velocity = new Vector(0,0);
-                _t.getCue().resetCue();
+                if (_self.type === "cue") _t.getCue().resetCue();
+                // send to game logic
             }
 
         }
