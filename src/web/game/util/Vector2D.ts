@@ -61,4 +61,38 @@ export class Vector {
         return Math.sqrt((this.x - v.getX()) * (this.x - v.getX()) + (this.y - v.getY()) * (this.y - v.getY()));
     }
 
+    public subtract(v: Vector): Vector {
+        return new Vector(this.x - v.getX(), this.y - v.getY());
+    }
+
+    public dot(v: Vector): number {
+        return this.x * v.getX() + this.y * v.getY();
+    }
+
+    public multiplyClone(n: number) : Vector {
+        return new Vector(this.x * n, this.y * n);
+    }
+
+    public scale(s: number): void {
+        this.x *= s;
+        this.y *= s;
+    }
+
+    public normalize(): void {
+        let m: number = this.getMagnitude();
+        this.x /= m;
+        this.y /= m;
+    }
+
+    public angle(v: Vector): number {
+        return Math.acos(this.dot(v) / (this.getMagnitude() * v.getMagnitude()));
+    }
+
+    public rotate(angle: number): void {
+        let x: number = this.x;
+        let y: number = this.y;
+        this.x = x * Math.cos(angle) - y * Math.sin(angle);
+        this.y = x * Math.sin(angle) + y * Math.cos(angle);
+    }
+
 }

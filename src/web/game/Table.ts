@@ -55,6 +55,23 @@ export default class Table implements Sprite {
             if (_b.location.distance(this._balls[i].location) <= 2 * Ball.getRadius()) {
                 // collision
                 console.log("collision");
+
+                // calculate the angle between the two balls
+                let angle = _b.location.angle(this._balls[i].location);
+
+                let calcVelo: Vector = _b._velocity.clone();
+                let prevVelo: Vector = _b._velocity.clone();
+
+                // rotate prevVelo 90 degrees in the direction of the collision
+                prevVelo.rotate(angle + Math.PI / 2);
+                prevVelo.scalarMultiply(0.30);
+
+                calcVelo.rotate(angle);
+
+                _b.setVelocity(prevVelo); // stop shot
+                this._balls[i].setVelocity(calcVelo);
+
+
             }
         }
     }
