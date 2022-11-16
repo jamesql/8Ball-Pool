@@ -11,6 +11,7 @@ export class Input {
         window.addEventListener("mousemove", (e: MouseEvent) => {
             this._mouseX = e.clientX;      
             this._mouseY = e.clientY;   
+            console.log(this._mouseX, this._mouseY);
         });
         window.addEventListener("mousedown", (e: MouseEvent) => {
             let v = this.getMousePosition();

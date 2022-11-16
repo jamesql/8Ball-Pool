@@ -18,4 +18,5 @@ export class Pocket {
     public isBallInPocket(ball: Ball): boolean {
         return this._circle.isInside(ball.getPosition());
     }
+    
 }

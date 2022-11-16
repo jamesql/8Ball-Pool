@@ -14,6 +14,10 @@ export class Canvas {
             return { canvas: this.canvas, context: this.context };
         }
 
+        static getContext(): CanvasRenderingContext2D {
+            return this.context;
+        }
+
         static drawRect(x: number, y: number, width: number, height: number, color: string) {
             this.context.fillStyle = color;
             this.context.fillRect(x, y, width, height);

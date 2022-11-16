@@ -95,4 +95,10 @@ export class Vector {
         this.y = x * Math.sin(angle) + y * Math.cos(angle);
     }
 
+    public getUnitVector(): Vector {
+        let v: Vector = this.clone();
+        v.normalize();
+        return v;
+    }
+
 }

@@ -8,6 +8,7 @@ import { Sprite } from './util/Sprite';
 import { Vector } from './util/Vector2D';
 import EventLoop from './util/EventLoop';
 import { _listener } from './util/Types';
+import { Rail } from './Rail';
 
 export default class Table implements Sprite {
     visible: boolean;
@@ -17,6 +18,7 @@ export default class Table implements Sprite {
     private _balls: Ball[] = [];
     private _pockets: Pocket[] = [];
     private _players: Player[] = [];
+    private _rails: Rail[] = [];
     private _currentPlayer: Player;
     private _cue: Cue;
     private _event: _listener;
@@ -25,6 +27,7 @@ export default class Table implements Sprite {
     constructor() {
         console.log("Table created");
         this.init();
+        this.createRails();
         this.rackBalls();
         this._cue = new Cue();
     }
@@ -34,6 +37,10 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(800,500), "solid"));
         this._balls.push(new Ball(new Vector(800, 300), "stripe"));
         this._balls.push(new Ball(new Vector(800, 700), "eight"));
+    }
+
+    public createRails() {
+        this._rails.push(new Rail(204, 130, 500, 15));
     }
 
     public getCue() : Cue {
@@ -70,8 +77,16 @@ export default class Table implements Sprite {
 
                 _b.setVelocity(prevVelo); // stop shot
                 this._balls[i].setVelocity(calcVelo);
+            }
+        }
 
-
+        // check for collisions with rails
+        for (let i = 0; i < this._rails.length; i++) {
+            if (this._rails[i].isBallInside(_b)) {
+                // collision
+                console.log("collision with rail");
+                
+                _b.setVelocity(new Vector(0, 0)); // stop for now TODO: fix this
             }
         }
     }
