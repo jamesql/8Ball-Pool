@@ -81,7 +81,13 @@ export class Ball implements Sprite {
             if (_t.isBallInPocket(_self)) {
                 _self._velocity = new Vector(0,0);
                 _self.setVisible(false);
-                // send to game logic
+                console.log("pocketed");
+                if (_self.type === "cue") {
+                    _self.location = new Vector(500,500);
+                    _self.setVisible(true);
+                    Game.getTable().getCue().resetCue();
+                    // send to game logic
+                }
             }
 
             if (_self._velocity.getMagnitude() < 0.1) {
@@ -92,7 +98,7 @@ export class Ball implements Sprite {
             }
 
         }
-
+        if (_self.visible)
         Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
     }
 

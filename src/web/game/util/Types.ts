@@ -32,3 +32,4 @@ export interface _listener {
 
 export type ballType = "cue" | "solid" | "stripe" | "eight";
 export type playerColor = "stripe" | "solid" | "none";
+export type railType = "top" | "bottom" | "left" | "right";

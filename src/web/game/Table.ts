@@ -9,6 +9,7 @@ import { Vector } from './util/Vector2D';
 import EventLoop from './util/EventLoop';
 import { _listener } from './util/Types';
 import { Rail } from './Rail';
+import { Physics } from './util/Physics';
 
 export default class Table implements Sprite {
     visible: boolean;
@@ -29,6 +30,7 @@ export default class Table implements Sprite {
         this.init();
         this.createRails();
         this.rackBalls();
+        this.createPockets();
         this._cue = new Cue();
     }
 
@@ -40,19 +42,41 @@ export default class Table implements Sprite {
     }
 
     public createRails() {
-        this._rails.push(new Rail(204, 130, 500, 15));
+        this._rails.push(new Rail(204, 130, 575, 15, "top"));
+        this._rails.push(new Rail(850, 130, 575, 15, "top"));
+        this._rails.push(new Rail(204, 789, 575, 15, "bottom"));
+        this._rails.push(new Rail(850, 789, 575, 15, "bottom"));
+        this._rails.push(new Rail(150, 170, 15, 615, "left"));
+        this._rails.push(new Rail(1468, 170, 15, 615, "right"));
+    }
+
+    public createPockets() {
+        this._pockets.push(new Pocket(140, 115, "corner"));
+        this._pockets.push(new Pocket(810, 93, "middle"));
+        this._pockets.push(new Pocket(140, 819, "corner"));
+        this._pockets.push(new Pocket(810, 840, "middle"));
+        this._pockets.push(new Pocket(1480, 130, "corner"));
+        this._pockets.push(new Pocket(1480, 815, "corner"));
+
+
+
+
     }
 
     public getCue() : Cue {
         return this._cue;
     }
-
+    
     public getCueBall() : Ball {
         return this._balls[0]; // should change this to be more dynamic
     }
 
     public isBallInPocket(_b: Ball): boolean {
-        return false;
+        for (let i = 0; i < this._pockets.length; i++) {
+            if (this._pockets[i].isBallInPocket((_b))) {
+                return true;
+            }
+        }
     }
 
     public checkForCollisions(_b: Ball) : void {
@@ -85,8 +109,7 @@ export default class Table implements Sprite {
             if (this._rails[i].isBallInside(_b)) {
                 // collision
                 console.log("collision with rail");
-                
-                _b.setVelocity(new Vector(0, 0)); // stop for now TODO: fix this
+                _b.setVelocity(Physics.getExitVelo(_b, this._rails[i]));
             }
         }
     }

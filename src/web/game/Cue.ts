@@ -22,6 +22,7 @@ export class Cue implements Sprite {
     _powerUp: _key;
     _powerDown: _key;
     _angle: number;
+    _lastShotPosition: Vector;
 
     private static cueOffset = 2.36;
 
@@ -38,6 +39,7 @@ export class Cue implements Sprite {
 
     public shoot(self: any) {
         let _this: Cue = self as Cue;
+        _this._lastShotPosition = _this.location.clone();
         let _velocity = new Vector(_this._power * Math.cos(_this._angle), _this._power * Math.sin(_this._angle));
         _this._power = 0;
         _this._tipPosition = new Vector(_this.location.getX() + _this._relative.getX(), _this.location.getY() + _this._relative.getY());
