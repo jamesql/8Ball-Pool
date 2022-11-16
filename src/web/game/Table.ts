@@ -35,19 +35,19 @@ export default class Table implements Sprite {
     }
 
     public rackBalls() {
-        this._balls.push(new Ball(new Vector(500, 500), "cue"));
-        this._balls.push(new Ball(new Vector(800,500), "solid"));
-        this._balls.push(new Ball(new Vector(800, 300), "stripe"));
-        this._balls.push(new Ball(new Vector(800, 700), "eight"));
+        this._balls.push(new Ball(new Vector(475, 475), "cue"));
+        this._balls.push(new Ball(new Vector(1145,475), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35, 475+20), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35, 475-20), "solid"));
     }
 
     public createRails() {
-        this._rails.push(new Rail(204, 130, 575, 15, "top"));
-        this._rails.push(new Rail(850, 130, 575, 15, "top"));
-        this._rails.push(new Rail(204, 789, 575, 15, "bottom"));
-        this._rails.push(new Rail(850, 789, 575, 15, "bottom"));
-        this._rails.push(new Rail(150, 170, 15, 615, "left"));
-        this._rails.push(new Rail(1468, 170, 15, 615, "right"));
+        this._rails.push(new Rail(195, 130, 570, 15, "top"));
+        this._rails.push(new Rail(850, 130, 570, 15, "top"));
+        this._rails.push(new Rail(204, 789, 570, 15, "bottom"));
+        this._rails.push(new Rail(850, 789, 570, 15, "bottom"));
+        this._rails.push(new Rail(140, 180, 15, 570, "left"));
+        this._rails.push(new Rail(1450, 180, 15, 570, "right"));
     }
 
     public createPockets() {

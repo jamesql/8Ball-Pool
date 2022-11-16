@@ -15,7 +15,7 @@ export class Cue implements Sprite {
     location: Vector;
     _tipPosition: Vector;
     _radius: number;
-    static _cueBallPosition: Vector = new Vector(500,500);
+    static _cueBallPosition: Vector = new Vector(475,475);
     _power: number = 0;
     _event: _listener;
     _relative: Vector;
