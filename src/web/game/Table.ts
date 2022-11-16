@@ -36,6 +36,10 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(800, 700), "eight"));
     }
 
+    public getCue() : Cue {
+        return this._cue;
+    }
+
     public getCueBall() : Ball {
         return this._balls[0]; // should change this to be more dynamic
     }

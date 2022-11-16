@@ -4,6 +4,8 @@ import { ballType, _listener } from './util/Types';
 import EventLoop from './util/EventLoop';
 import { getImage } from './util/UtilFunctions';
 import { Canvas } from './Graphics';
+import { Cue } from './Cue';
+import { Game } from './Game';
 
 export class Ball implements Sprite {
     visible: boolean;
@@ -68,7 +70,12 @@ export class Ball implements Sprite {
             v.add(_self._velocity);
             _self.location = v;
 
-            
+            if (_self._velocity.getMagnitude() < 0.1) {
+                _self._moving = false;
+                _self._velocity = new Vector(0,0);
+                Game.getTable().getCue().resetCue();
+            }
+
         }
 
         Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());

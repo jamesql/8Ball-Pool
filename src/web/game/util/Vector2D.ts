@@ -49,4 +49,8 @@ export class Vector {
         this.y *= s;
     }
 
+    public getMagnitude(): number {
+        return Math.sqrt(this.x * this.x + this.y * this.y);
+    }
+
 }

@@ -49,6 +49,7 @@ export class Cue implements Sprite {
     public resetCue() {
         this._relative = new Vector(-15,-15);
         this._power = 0;
+        Cue._cueBallPosition = Game.getTable().getCueBall().location.clone();
 
     }
 
