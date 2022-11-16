@@ -39,15 +39,27 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(1145,475), "solid"));
         this._balls.push(new Ball(new Vector(1145+35, 475+20), "stripe"));
         this._balls.push(new Ball(new Vector(1145+35, 475-20), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35*2, 475+40), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*2, 475), "eight"));
+        this._balls.push(new Ball(new Vector(1145+35*2, 475-40), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*3, 475+60), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35*3, 475+20), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*3, 475-20), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35*3, 475-60), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*4, 475+80), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35*4, 475+40), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*4, 475), "solid"));
+        this._balls.push(new Ball(new Vector(1145+35*4, 475-40), "stripe"));
+        this._balls.push(new Ball(new Vector(1145+35*4, 475-80), "solid"));
     }
 
     public createRails() {
-        this._rails.push(new Rail(195, 130, 570, 15, "top"));
-        this._rails.push(new Rail(850, 130, 570, 15, "top"));
-        this._rails.push(new Rail(204, 789, 570, 15, "bottom"));
-        this._rails.push(new Rail(850, 789, 570, 15, "bottom"));
-        this._rails.push(new Rail(140, 180, 15, 570, "left"));
-        this._rails.push(new Rail(1450, 180, 15, 570, "right"));
+        this._rails.push(new Rail(195, 130, 570, 25, "top"));
+        this._rails.push(new Rail(850, 130, 570, 25, "top"));
+        this._rails.push(new Rail(204, 789, 570, 25, "bottom"));
+        this._rails.push(new Rail(850, 789, 570, 25, "bottom"));
+        this._rails.push(new Rail(140, 180, 25, 570, "left"));
+        this._rails.push(new Rail(1450, 180, 25, 570, "right"));
     }
 
     public createPockets() {
@@ -85,7 +97,9 @@ export default class Table implements Sprite {
             if (_b.equals(this._balls[i])) continue;
             if (_b.location.distance(this._balls[i].location) <= 2 * Ball.getRadius()) {
                 // collision
+                if (this._balls[i].equals(_b._protectedBall)) continue;
                 console.log("collision");
+                
 
                 // calculate the angle between the two balls
                 let angle = _b.location.angle(this._balls[i].location);
@@ -93,14 +107,17 @@ export default class Table implements Sprite {
                 let calcVelo: Vector = _b._velocity.clone();
                 let prevVelo: Vector = _b._velocity.clone();
 
+                // set location of _b so the balls do not get stuck
+
                 // rotate prevVelo 90 degrees in the direction of the collision
                 prevVelo.rotate(angle + Math.PI / 2);
-                prevVelo.scalarMultiply(0.30);
+                //prevVelo.scalarMultiply(0.75);
 
                 calcVelo.rotate(angle);
 
                 _b.setVelocity(prevVelo); // stop shot
                 this._balls[i].setVelocity(calcVelo);
+                _b._protectedBall = this._balls[i];
             }
         }
 
@@ -110,6 +127,7 @@ export default class Table implements Sprite {
                 // collision
                 console.log("collision with rail");
                 _b.setVelocity(Physics.getExitVelo(_b, this._rails[i]));
+                _b._protectedBall = null;
             }
         }
     }

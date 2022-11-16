@@ -16,6 +16,7 @@ export class Ball implements Sprite {
     _event: _listener;
     _velocity: Vector = new Vector(0,0);
     _moving: boolean = false;
+    _protectedBall: Ball = null;
 
     private static F: number = 0.018;
     private static R: number = 18;
@@ -42,13 +43,14 @@ export class Ball implements Sprite {
             case "solid":
                 return "red";
             case "stripe":
-                return "blue";
+                return "yellow";
             case "eight":
                 return "black";
         }
     }
 
     public equals(_b: Ball) : boolean {
+        if (!_b) return false;
         return this.type === _b.type && this.location.equals(_b.location);
     }
 
@@ -93,6 +95,7 @@ export class Ball implements Sprite {
             if (_self._velocity.getMagnitude() < 0.1) {
                 _self._moving = false;
                 _self._velocity = new Vector(0,0);
+                _self._protectedBall = null;
                 if (_self.type === "cue") _t.getCue().resetCue();
                 // send to game logic
             }

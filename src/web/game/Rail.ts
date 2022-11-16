@@ -12,12 +12,14 @@ export class Rail extends Rectangle {
     constructor(_x: number, _y: number, _width: number, _height: number, _type: railType) {
         super(_x, _y, _width, _height);
         this._r = _type;
-        EventLoop.addListener({
+       
+        // debug code
+       /* EventLoop.addListener({
             id: "draw",
             function: this.draw.bind(this),
             self: null,
             active: true
-        });
+        });*/
     }
 
     public isBallInside(_b: Ball) : boolean {

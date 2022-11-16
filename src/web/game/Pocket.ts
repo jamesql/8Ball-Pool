@@ -6,17 +6,19 @@ import EventLoop from "./util/EventLoop";
 
 export class Pocket {
     private _circle: Circle;
-    private static _MIDDLE_RADIUS = 50;
-    private static _CORNER_RADIUS = 50;
+    private static _MIDDLE_RADIUS = 60;
+    private static _CORNER_RADIUS = 60;
 
     constructor(_x: number, _y: number, _type: "middle" | "corner") {
         this._circle = new Circle(_x, _y, _type==="middle" ? Pocket._MIDDLE_RADIUS : Pocket._CORNER_RADIUS);
-        EventLoop.addListener({
+        
+        // debug code
+        /*EventLoop.addListener({
             id: "draw",
             function: this.draw.bind(this),
             self: null,
             active: true
-        });
+        });*/ 
     }
 
     public getCircle(): Circle {
