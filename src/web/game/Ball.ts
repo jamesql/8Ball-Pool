@@ -13,7 +13,7 @@ export class Ball implements Sprite {
     _event: _listener;
     _velocity: Vector = new Vector(0,0);
     _moving: boolean = false;
-    
+
     private static F: number = 0.018;
     private static R: number = 18;
 
@@ -64,8 +64,11 @@ export class Ball implements Sprite {
         let v: Vector = _self.location;
 
         if (_self._moving) {
+            _self._velocity.scalarMultiply(1 - Ball.F);
             v.add(_self._velocity);
             _self.location = v;
+
+            
         }
 
         Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
