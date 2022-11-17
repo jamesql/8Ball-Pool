@@ -30,6 +30,10 @@ export interface _listener {
     self: any
 }
 
+export interface _shotReplay {
+
+}
+
 export type ballType = "cue" | "solid" | "stripe" | "eight";
 export type playerColor = "stripe" | "solid" | "none";
 export type railType = "top" | "bottom" | "left" | "right";
