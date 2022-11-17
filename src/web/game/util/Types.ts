@@ -31,9 +31,21 @@ export interface _listener {
 }
 
 export interface _shotReplay {
+    _cuePosition: Vector,
+    _cueAngle: number,
+    _cuePower: number,
+    _ballPosition: Vector,
+    _ballVelocity: Vector
+}
 
+export interface _lobby {
+    oppponent: string,
+    slots: number
+    players: number
 }
 
 export type ballType = "cue" | "solid" | "stripe" | "eight";
 export type playerColor = "stripe" | "solid" | "none";
 export type railType = "top" | "bottom" | "left" | "right";
+
+export type shotResult = "miss" | "hit" | "pocket" | "foul";

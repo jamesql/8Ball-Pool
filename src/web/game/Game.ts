@@ -13,7 +13,6 @@ export class Game {
     static _menu: Menu;
 
     constructor() {
-
         Input.init();
         Game._menu = new Menu();
     }
@@ -28,6 +27,9 @@ export class Game {
         Buttons.clear();
         Keys.clear();
         Game.init();
+
+
+        
     }
 
     public static getTable(): Table {

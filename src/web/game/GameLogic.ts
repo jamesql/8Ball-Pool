@@ -1,9 +1,20 @@
 import { Player } from './Player';
 import { Ball } from './Ball';
+import { Game } from './Game';
+import Table from './Table';
 export class GameLogic {
 
-    private _isTableOpen: boolean = true;
-    private _isGameOver: boolean = false;
+    private static _isTableOpen: boolean = true;
+    private static _isGameOver: boolean = false;
+    private static _game: Game;
+    private static _table: Table;
+
+    static startGame() : void {
+        GameLogic._isTableOpen = true;
+        GameLogic._isGameOver = false;
+
+
+    }
 
     static handleShot() : void {
 

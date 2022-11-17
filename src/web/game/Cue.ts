@@ -56,9 +56,11 @@ export class Cue implements Sprite {
     }
 
     public increasePower(_obj: any) {
+        console.log("1")
         let _this: Cue = _obj as Cue;
         if(!_this.isMaxPower()) {
         _this._power += 2.5;
+        console.log(_this._power);
         _this._relative.addX(-10);
         _this._relative.addY(-10);
         }

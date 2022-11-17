@@ -1,14 +1,17 @@
 // @ts-ignore 
 
-class ClientSocket {
+import { _lobby, _shotReplay } from "./util/Types";
+
+export class ClientSocket {
     static socket: WebSocket;
     static seq: number;
-    static username: string;
+    static username: string = "Guest|" + Math.random().toString(36);
     static hb_int: number;
     static timeout: NodeJS.Timeout;
     static hb_start: number;
 
-    static async init() {
+    static async init(username: string) {
+        this.username = username;
         this.socket = new WebSocket(`ws://localhost:8080`);
 
 
@@ -28,7 +31,7 @@ class ClientSocket {
                 this.sendMsg({
                     op: 3,
                     d: {
-                        u: ""
+                        u: this.username
                     }
                 });
                 this.hb_int = dt.d.heartbeatInterval;
@@ -78,8 +81,15 @@ class ClientSocket {
 
     }
 
-}
+    static async sendShot(shot: _shotReplay) {
 
-(async() => {
-    await ClientSocket.init();
-})();
+    }
+
+    static async getListOfLobbys(): Promise<_lobby[]> {
+        return [];
+    }
+
+    static async joinLobby(lobby: _lobby) {
+        
+    }
+}

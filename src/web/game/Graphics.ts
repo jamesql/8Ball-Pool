@@ -9,6 +9,11 @@ export class Canvas {
             this.canvas.width = 1600;
             this.canvas.height = 900;
         }
+
+        static refresh(): void {
+            this.canvas = document.getElementById("game") as HTMLCanvasElement;
+            this.context = this.canvas.getContext("2d");
+        }
     
         static getGraphics(): _graphics {
             return { canvas: this.canvas, context: this.context };
