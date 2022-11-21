@@ -22,6 +22,7 @@ export const HEARTBEAT_INTERVAL = 6e4 as const;
 export interface User {
     id: string;
     username: string;
+    skt: Socket.SocketClient;
 }
 
 export interface LobbyState {
