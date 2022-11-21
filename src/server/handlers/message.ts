@@ -27,6 +27,11 @@ export default (async (skt: Socket.SocketClient, payload: ws.RawData, isBinary: 
                 s: ++skt.props.sequence
             });
         }
+
+        case OPCodes.AUTH: {
+            const { d } = data;
+        }
+
     }
 
 
