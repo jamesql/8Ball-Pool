@@ -37,6 +37,10 @@ export default (async (skt: Socket.SocketClient, payload: ws.RawData, isBinary: 
             const { d } = data;
         }
 
+        case OPCodes.JOIN_LOBBY_REQ: {
+            const { d } = data;
+        }
+
         case OPCodes.GAME_STATE_UPDATE_REQ: {
             const { d } = data;
         }
