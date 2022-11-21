@@ -8,6 +8,12 @@ export const OPCodes = {
     GET_LOBBY_RES: 6,
     JOIN_LOBBY_REQ: 7,
     JOIN_LOBBY_RES: 8,
+    START_GAME_REQ: 9,
+    START_GAME_RES: 10,
+    GAME_STATE_UPDATE_REQ: 11,
+    GAME_STATE_UPDATE_RES: 12,
+    GAME_SHOT_REQ: 13,
+    GAME_SHOT_RES: 14,
     ERROR: 20,
 } as const;
 
