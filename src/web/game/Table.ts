@@ -7,7 +7,7 @@ import { Cue } from './Cue';
 import { Sprite } from './util/Sprite';
 import { Vector } from './util/Vector2D';
 import EventLoop from './util/EventLoop';
-import { _listener } from './util/Types';
+import { _listener, ballType } from './util/Types';
 import { Rail } from './Rail';
 import { Physics } from './util/Physics';
 
@@ -88,6 +88,22 @@ export default class Table implements Sprite {
             if (this._pockets[i].isBallInPocket((_b))) {
                 return true;
             }
+        }
+    }
+
+    public getCurrentPlayer() : Player {
+        return this._currentPlayer;
+    }
+
+    public getCurrentPlayerBallType() : ballType {
+        return this._currentPlayer.getBallType();
+    }
+
+    public switchTurns() {
+        if (this._currentPlayer === this._players[0]) {
+            this._currentPlayer = this._players[1];
+        } else {
+            this._currentPlayer = this._players[0];
         }
     }
 

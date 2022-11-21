@@ -14,6 +14,11 @@ export const OPCodes = {
     GAME_STATE_UPDATE_RES: 12,
     GAME_SHOT_REQ: 13,
     GAME_SHOT_RES: 14,
+    END_OF_TURN_REQ: 15,
+    END_OF_TURN_RES: 16,
+    END_OF_GAME_REQ: 17,
+    END_OF_GAME_RES: 18,
+    CREATE_LOBBY_REQ: 19, // responds with JOIN_LOBBY_RES
     ERROR: 20,
 } as const;
 
@@ -28,7 +33,7 @@ export interface User {
 export interface LobbyState {
     id: string;
     host: User;
-    opponent: User;
+    opponent: User | null;
     state: "waiting" | "playing";
     p_turn: "host" | "opponent";
     h_type: "solid" | "stripe" | "none";

@@ -31,21 +31,23 @@ export interface _listener {
 }
 
 export interface _shotReplay {
-    _cuePosition: Vector,
+    _relative: Vector,
     _cueAngle: number,
     _cuePower: number,
-    _ballPosition: Vector,
-    _ballVelocity: Vector
+    _cueBallVelocity: Vector
 }
 
-export interface _lobby {
-    oppponent: string,
-    slots: number
-    players: number
+export interface LobbyState {
+    id: string;
+    host: string;
+    opponent: string;
+    state: "waiting" | "playing";
+    p_turn: "host" | "opponent";
+    h_type: "solid" | "stripe" | "none";
+    o_type: "solid" | "stripe" | "none";
 }
 
-export type ballType = "cue" | "solid" | "stripe" | "eight";
-export type playerColor = "stripe" | "solid" | "none";
+export type ballType = "cue" | "solid" | "stripe" | "eight" | "open";
 export type railType = "top" | "bottom" | "left" | "right";
 
 export type shotResult = "miss" | "hit" | "pocket" | "foul";

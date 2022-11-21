@@ -13,7 +13,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
         username: ""
     }
 
-    skt.on("message", require("./message").default.bind(null, ws));
+    skt.on("message", require("./message").default.bind(null, ws, skt, rq));
 
     skt.sendAsync({
         op: OPCodes.HELLO, 

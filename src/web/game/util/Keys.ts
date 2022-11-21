@@ -24,7 +24,7 @@ export class Keys {
 
     public static getKeys(): _key[] {
         return Keys.keyMap;
-    }   
+    }
 
     public static getActiveKeys(): _key[] {
         return Keys.keyMap.filter(k => k.active);
@@ -34,8 +34,8 @@ export class Keys {
         return Keys.getActiveKeys().find(k => k.key === keyString);
     }
 
-    public static keyboardClick(keyString: string) {
-        let _k = Keys.getKey(keyString);
-        if (_k) _k.onDown(_k.obj);
+    public static async keyboardClick(keyString: string) {
+        let _k = Keys.getActiveKey(keyString);
+        if (_k) await _k.onDown(_k.obj);
     }
 }

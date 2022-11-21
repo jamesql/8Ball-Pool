@@ -1,6 +1,7 @@
 // @ts-ignore 
 
-import { _lobby, _shotReplay } from "./util/Types";
+import { LobbyState, _shotReplay } from "./util/Types";
+import { OPCodes } from '../../server/util/WSValues';
 
 export class ClientSocket {
     static socket: WebSocket;
@@ -9,6 +10,7 @@ export class ClientSocket {
     static hb_int: number;
     static timeout: NodeJS.Timeout;
     static hb_start: number;
+    protected static _lobbyList: LobbyState[] = [];
 
     static async init(username: string) {
         this.username = username;
@@ -24,12 +26,10 @@ export class ClientSocket {
     static async msgHandler(ev: MessageEvent<string>) {
         const dt = JSON.parse(ev.data);
         if (dt.s) this.seq = dt.s;
-        switch (dt.op)
-        {
-            // HELLO > Respond With Auth
-            case 0: {
+        switch (dt.op) {
+            case OPCodes.HELLO: {
                 this.sendMsg({
-                    op: 3,
+                    op: OPCodes.AUTH,
                     d: {
                         u: this.username
                     }
@@ -38,23 +38,38 @@ export class ClientSocket {
                 break;
             }
 
-            // HEARTBEAT_ACK
-            case 2: {
+            case OPCodes.HEARTBEAT_ACK: {
                 console.log(`[Socket] Heartbeat acknowledged...`);
             }
 
-            // READY > Start Heartbeat
-            case 4: {
-                if(!this.timeout) this.startHeartbeat(this.hb_int);
+            case OPCodes.READY: {
+
+            }
+
+            case OPCodes.GET_LOBBY_RES: {
+                const {d} = dt;
+                console.log(d.lobbies); //
+                // [LobbyState, LobbyState, LobbyState]
+
+            }
+
+            case OPCodes.JOIN_LOBBY_RES: {
+                const {d} = dt;
+                console.log(d.lobby); //
+                // LobbyState
             }
         }
+    }
+
+    static getUsername(): string {
+        return ClientSocket.username;
     }
 
     static async startHeartbeat(int: number) {
         this.timeout = setInterval(() => {
             this.hb_start = Date.now();
             this.sendMsg({
-                op:1,
+                op: 1,
                 d: this.seq
             });
         }, int);
@@ -70,9 +85,9 @@ export class ClientSocket {
     }
 
     static async handle(ev: Event) {
-        
+
     }
-    
+
     static async errorHandler(ev: Event) {
 
     }
@@ -82,14 +97,39 @@ export class ClientSocket {
     }
 
     static async sendShot(shot: _shotReplay) {
-
+        await this.sendMsg({
+            op: OPCodes.GAME_SHOT_REQ,
+            d: shot
+        });
     }
 
-    static async getListOfLobbys(): Promise<_lobby[]> {
-        return [];
+    static async refreshLobbys() {
+        await this.sendMsg({
+            op: OPCodes.GET_LOBBY_REQ,
+            d: {}
+        });
     }
 
-    static async joinLobby(lobby: _lobby) {
-        
+    static async getListOfLobbys(): Promise<LobbyState[]> {
+        return this._lobbyList;
+    }
+
+    static async createLobby() {
+        await this.sendMsg({
+            op: OPCodes.CREATE_LOBBY_REQ,
+            d: {
+                username: this.username
+            }
+        });
+    }
+
+    static async joinLobby(lobby: LobbyState) {
+        await this.sendMsg({
+            op: OPCodes.JOIN_LOBBY_REQ,
+            d: {
+                username: this.username,
+                lobby_id: lobby.id
+            }
+        });
     }
 }

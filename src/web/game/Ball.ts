@@ -7,6 +7,8 @@ import { Canvas } from './Graphics';
 import { Cue } from './Cue';
 import { Game } from './Game';
 import Table from './Table';
+import { Input } from './util/Input';
+import { GameLogic } from './GameLogic';
 
 export class Ball implements Sprite {
     visible: boolean;
@@ -17,6 +19,7 @@ export class Ball implements Sprite {
     _velocity: Vector = new Vector(0,0);
     _moving: boolean = false;
     _protectedBall: Ball = null;
+    _isFollowingMouse: boolean = false;
 
     private static F: number = 0.018;
     private static R: number = 18;
@@ -59,6 +62,10 @@ export class Ball implements Sprite {
         this._moving = true;
     }
 
+    public setFollowMouse(_follow: boolean) : void {
+        this._isFollowingMouse = _follow;
+    }
+
     show(): void {
         Canvas.drawCircle(this.location.getX(), this.location.getY(), Ball.R, this.getColorBasedOnType());
     }
@@ -69,7 +76,15 @@ export class Ball implements Sprite {
         
     }
     update(self: any): void {
+
         let _self: Ball = <Ball>self;
+
+        // ball in hand logic
+        if (_self._isFollowingMouse) {
+            _self.location = Input.getMousePosition();
+            return;
+        }
+
         let v: Vector = _self.location;
         let _t: Table = Game.getTable();
 
@@ -85,10 +100,9 @@ export class Ball implements Sprite {
                 _self.setVisible(false);
                 console.log("pocketed");
                 if (_self.type === "cue") {
-                    _self.location = new Vector(500,500);
+                    _self.setFollowMouse(true);
                     _self.setVisible(true);
-                    Game.getTable().getCue().resetCue();
-                    // send to game logic
+                    GameLogic.handleScratch();
                 }
             }
 

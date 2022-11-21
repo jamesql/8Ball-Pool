@@ -23,6 +23,10 @@ export class Network {
         return this._users.find(u => u.id === id);
     }
 
+    public static async getUserByUsername(username: string): Promise<User> {
+        return this._users.find(u => u.username === username);
+    }
+
     public static getUsers(): User[] {
         return this._users;
     }

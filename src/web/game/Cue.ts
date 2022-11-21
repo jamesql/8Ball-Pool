@@ -4,10 +4,11 @@ import { getImage } from "./util/UtilFunctions";
 import { Vector } from "./util/Vector2D";
 import { Input } from "./util/Input";
 import EventLoop from "./util/EventLoop";
-import { _listener, _key } from './util/Types';
+import { _listener, _key, _shotReplay } from './util/Types';
 import { Keys } from "./util/Keys";
 import { Ball } from "./Ball";
 import { Game } from "./Game";
+import { ClientSocket } from './client';
 
 export class Cue implements Sprite {
     visible: boolean;
@@ -37,10 +38,24 @@ export class Cue implements Sprite {
         EventLoop.setListener(this._event, _visible);
     }
 
-    public shoot(self: any) {
+    public async shoot(self: any) {
         let _this: Cue = self as Cue;
         _this._lastShotPosition = _this.location.clone();
         let _velocity = new Vector(_this._power * Math.cos(_this._angle), _this._power * Math.sin(_this._angle));
+
+        // cueBallVelo
+        // Power
+        // Angle
+        // Relative
+
+        let _shot: _shotReplay = {
+            _relative: _this._relative.clone(),
+            _cuePower: _this._power,
+            _cueAngle: _this._angle,
+            _cueBallVelocity: _velocity.clone(),
+        }
+        await ClientSocket.sendShot(_shot);
+
         _this._power = 0;
         _this._tipPosition = new Vector(_this.location.getX() + _this._relative.getX(), _this.location.getY() + _this._relative.getY());
         _this._relative = new Vector(0,0);
