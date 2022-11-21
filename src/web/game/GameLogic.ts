@@ -4,23 +4,26 @@ import { Game } from './Game';
 import Table from './Table';
 import { Lobby } from './Lobby';
 import { ClientSocket } from './client';
+import { LobbyState } from 'server/util/WSValues';
 export class GameLogic {
 
     private static _isTableOpen: boolean = true;
     private static _isGameOver: boolean = false;
     private static _game: Game;
     private static _table: Table;
-    private static _lobbyState: Lobby;
+    private static _lobbyState: Lobby = new Lobby();
 
-    static startGame() : void {
+    static async startGame() : Promise<void> {
         GameLogic._isTableOpen = true;
         GameLogic._isGameOver = false;
 
-
+        if (this.isHost()) await ClientSocket.startGame(this._lobbyState);
+        
+        Game.init();
     }
 
     static updateLobbyState(_l: Lobby) : void {
-        GameLogic._lobbyState = _l;
+        this._lobbyState.updateLobby(_l);
     }
 
     static createLobby() : void {
@@ -66,6 +69,10 @@ export class GameLogic {
 
     static resetGame() : void {
 
-    }   
+    }  
+    
+    static isHost(): boolean {
+        return this._lobbyState.amIHost();
+    }
     
 }

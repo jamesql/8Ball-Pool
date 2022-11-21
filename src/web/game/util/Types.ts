@@ -37,16 +37,6 @@ export interface _shotReplay {
     _cueBallVelocity: Vector
 }
 
-export interface LobbyState {
-    id: string;
-    host: string;
-    opponent: string;
-    state: "waiting" | "playing";
-    p_turn: "host" | "opponent";
-    h_type: "solid" | "stripe" | "none";
-    o_type: "solid" | "stripe" | "none";
-}
-
 export type ballType = "cue" | "solid" | "stripe" | "eight" | "open";
 export type railType = "top" | "bottom" | "left" | "right";
 

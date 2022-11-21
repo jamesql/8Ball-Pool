@@ -1,7 +1,9 @@
 // @ts-ignore 
 
-import { LobbyState, _shotReplay } from "./util/Types";
-import { OPCodes } from '../../server/util/WSValues';
+import { _shotReplay } from "./util/Types";
+import { LobbyState, OPCodes } from '../../server/util/WSValues';
+import { Lobby } from "./Lobby";
+import { GameLogic } from "./GameLogic";
 
 export class ClientSocket {
     static socket: WebSocket;
@@ -40,23 +42,45 @@ export class ClientSocket {
 
             case OPCodes.HEARTBEAT_ACK: {
                 console.log(`[Socket] Heartbeat acknowledged...`);
+                break;
             }
 
             case OPCodes.READY: {
-
+                console.log(`[Socket] Ready....`);
+                // update lobby list
+                this._lobbyList = dt.d.lobbies;
+                this.sendMsg({
+                    op: OPCodes.GET_LOBBY_REQ,
+                    d: {}
+                });
+                break;
             }
 
             case OPCodes.GET_LOBBY_RES: {
                 const {d} = dt;
-                console.log(d.lobbies); //
-                // [LobbyState, LobbyState, LobbyState]
-
+                console.log(d.lobbies); 
+                this._lobbyList = d.lobbies;
+                break;
             }
 
             case OPCodes.JOIN_LOBBY_RES: {
                 const {d} = dt;
-                console.log(d.lobby); //
-                // LobbyState
+                let _l: LobbyState = d.lobby;
+                GameLogic.updateLobbyState(d.lobby);
+                break;
+            }
+
+            case OPCodes.GAME_STATE_UPDATE_RES: {
+                const {d} = dt;
+                GameLogic.updateLobbyState(d.lobby);
+                break;
+            }
+
+            case OPCodes.START_GAME_RES: {
+                const {d} = dt;
+                GameLogic.updateLobbyState(d.lobby);
+                await GameLogic.startGame();
+                break;
             }
         }
     }
@@ -128,6 +152,15 @@ export class ClientSocket {
             op: OPCodes.JOIN_LOBBY_REQ,
             d: {
                 username: this.username,
+                lobby_id: lobby.id
+            }
+        });
+    }
+
+    static async startGame(lobby: Lobby) {
+        await this.sendMsg({
+            op: OPCodes.START_GAME_REQ,
+            d: {
                 lobby_id: lobby.id
             }
         });

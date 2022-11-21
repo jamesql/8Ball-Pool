@@ -33,7 +33,7 @@ export interface User {
 export interface LobbyState {
     id: string;
     host: User;
-    opponent: User | null;
+    opponent: User;
     state: "waiting" | "playing";
     p_turn: "host" | "opponent";
     h_type: "solid" | "stripe" | "none";

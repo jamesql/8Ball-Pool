@@ -3,6 +3,9 @@ import { getCornerPoints, getImage } from './util/UtilFunctions';
 import { Buttons } from './util/Buttons';
 import { Game } from './Game';
 import { ClientSocket } from './client';
+import { GameLogic } from './GameLogic';
+import { Lobby } from './Lobby';
+import { LobbyState } from 'server/util/WSValues';
 
 export class Menu {
 
@@ -33,7 +36,13 @@ export class Menu {
 
 
         let points = getCornerPoints(100,100,300,50);
-        Buttons.createButton("createLobby", points, Menu.drawLobby, true);
+        Buttons.createButton("createLobby", points, () => {
+            GameLogic.createLobby();
+            // wait 2 seconds for lobby to be created
+            setTimeout(() => {
+                Menu.drawLobby();
+            }, 2000);
+        }, true);
         let points2 = getCornerPoints(100,200,300,50);
         Buttons.createButton("joinLobby", points2, Menu.drawLobbys, true);
     }
@@ -42,25 +51,45 @@ export class Menu {
         Buttons.clear();
         Canvas.clear();
         Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
-        Canvas.drawRect(100, 100, 300, 50, 'white');
-        Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
 
-        let points = getCornerPoints(100,100,300,50);
-        Buttons.createButton("startGame", points, () => {
-            Canvas.clear();
-            Game.init();
-        }, true);
+        if (GameLogic.isHost()) {
+            Canvas.drawRect(100, 100, 300, 50, 'white');
+            Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
+    
+            let points = getCornerPoints(100,100,300,50);
+            Buttons.createButton("startGame", points, async () => {
+                Canvas.clear();
+                await GameLogic.startGame();
+            }, true);
+        } else {
+            console.log("not host");
+        }
     }
 
-    static drawLobbys() : void {
+    static async drawLobbys() : Promise<void> {
         Buttons.clear();
         Canvas.clear();
-        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
-        Canvas.drawRect(100, 100, 300, 50, 'white');
-        Canvas.drawText(150, 135, 'Join Lobby | testing', 'black', '30px Arial');
 
-        let points = getCornerPoints(100,100,300,50);
-        Buttons.createButton("drawLobby_id", points, Menu.drawLobby, true);
+        let curX = 200;
+        let curY = 200;
+        let width = 300;
+        let height = 50;
+
+        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
+
+        let lobbys = await ClientSocket.getListOfLobbys();
+        //console.log(lobbys);
+        for (let i = 0; i < lobbys.length; i++) {
+            let lobby = lobbys[i];
+            Canvas.drawRect(curX, curY, width, height, 'white');
+            Canvas.drawText(curX + 10, curY + 35, lobby.host.username, 'black', '30px Arial');
+            let points = getCornerPoints(curX, curY, width, height);
+            Buttons.createButton("joinLobby" + i, points, async () => {
+                await ClientSocket.joinLobby(lobby);
+                Menu.drawLobby();
+            }, true);
+            curY += 100;
+        }
     }
 
     drawCanvas(): void {

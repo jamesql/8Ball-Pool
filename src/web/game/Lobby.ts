@@ -1,9 +1,9 @@
-import { LobbyState } from './util/Types';
+import { LobbyState, User } from 'server/util/WSValues';
 import { ClientSocket } from './client';
 export class Lobby implements LobbyState {
     id: string;
-    host: string;
-    opponent: string;
+    host: User;
+    opponent: User;
     state: 'waiting' | 'playing';
     p_turn: 'host' | 'opponent';
     h_type: 'solid' | 'stripe' | 'none';
@@ -14,7 +14,7 @@ export class Lobby implements LobbyState {
     }
 
     public amIHost(): boolean {
-        return this.host === ClientSocket.getUsername();
+        return this.host.username === ClientSocket.getUsername();
     }
 
     public updateLobby(lobby: LobbyState) {
