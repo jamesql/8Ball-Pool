@@ -30,6 +30,23 @@ export default (async (skt: Socket.SocketClient, payload: ws.RawData, isBinary: 
 
         case OPCodes.AUTH: {
             const { d } = data;
+
+        }
+
+        case OPCodes.GET_LOBBY_REQ: {
+            const { d } = data;
+        }
+
+        case OPCodes.GAME_STATE_UPDATE_REQ: {
+            const { d } = data;
+        }
+
+        case OPCodes.START_GAME_REQ: {
+            const { d } = data;
+        }
+
+        case OPCodes.GAME_SHOT_REQ: {
+            const { d } = data;
         }
 
     }
