@@ -12,3 +12,13 @@ export const OPCodes = {
 } as const;
 
 export const HEARTBEAT_INTERVAL = 6e4 as const;
+
+export interface LobbyState {
+    id: string;
+    host: string;
+    opponent: string;
+    state: "waiting" | "playing";
+    p_turn: "host" | "opponent";
+    h_type: "solid" | "stripe" | "none";
+    o_type: "solid" | "stripe" | "none";
+}
