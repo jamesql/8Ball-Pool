@@ -51,6 +51,7 @@ export class Buttons {
 
     public static mouseClick(v: Vector) {
         this.getActiveButtons().forEach(b => {
+            console.log(b);
             if (Buttons.isInside(v, b.points)) {
                 b.onClick();
             }

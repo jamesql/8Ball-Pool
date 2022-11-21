@@ -19,24 +19,55 @@ export class Menu {
             document.body.innerHTML = "";
             this.drawCanvas();
             Canvas.refresh();
-            this.initMenu();
+            this.joinOrHost();
         }).bind(this));
     }
 
-    initMenu(): void {
+    joinOrHost(): void {
+        Canvas.clear();
+        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
+        Canvas.drawRect(100, 100, 300, 50, 'white');
+        Canvas.drawText(150, 135, 'Create Lobby', 'black', '30px Arial');
+        Canvas.drawRect(100, 200, 300, 50, 'white');
+        Canvas.drawText(150, 235, 'Join Lobby', 'black', '30px Arial');
+
+
+        let points = getCornerPoints(100,100,300,50);
+        Buttons.createButton("createLobby", points, Menu.drawLobby, true);
+        let points2 = getCornerPoints(100,200,300,50);
+        Buttons.createButton("joinLobby", points2, Menu.drawLobbys, true);
+    }
+
+    static drawLobby(): void {
+        Buttons.clear();
+        Canvas.clear();
         Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
         Canvas.drawRect(100, 100, 300, 50, 'white');
         Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
 
         let points = getCornerPoints(100,100,300,50);
-        Buttons.createButton("startGame", points, this.startGame, true);
+        Buttons.createButton("startGame", points, () => {
+            Canvas.clear();
+            Game.init();
+        }, true);
+    }
+
+    static drawLobbys() : void {
+        Buttons.clear();
+        Canvas.clear();
+        Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
+        Canvas.drawRect(100, 100, 300, 50, 'white');
+        Canvas.drawText(150, 135, 'Join Lobby | testing', 'black', '30px Arial');
+
+        let points = getCornerPoints(100,100,300,50);
+        Buttons.createButton("drawLobby_id", points, Menu.drawLobby, true);
     }
 
     drawCanvas(): void {
         document.body.innerHTML = "<canvas id='game' width='1600' height='900'></canvas>" + document.body.innerHTML;
     }
 
-    startGame(): void {
+    public startGame(): void {
         Canvas.clear();
         Game.init();
     }

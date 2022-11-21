@@ -13,7 +13,7 @@ export class Input {
             if (!this._enabled) return;
             this._mouseX = e.clientX;      
             this._mouseY = e.clientY;   
-            console.log(this._mouseX, this._mouseY);
+            //console.log(this._mouseX, this._mouseY);
         });
         window.addEventListener("mousedown", (e: MouseEvent) => {
             let v = this.getMousePosition();
