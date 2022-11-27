@@ -9,6 +9,7 @@ import { Game } from './Game';
 import Table from './Table';
 import { Input } from './util/Input';
 import { GameLogic } from './GameLogic';
+import { ClientSocket } from './client';
 
 export class Ball implements Sprite {
     visible: boolean;
@@ -70,6 +71,18 @@ export class Ball implements Sprite {
         this._isFollowingMouse = _follow;
     }
 
+    public onBallinHandClick() : void {
+        if (this.type !== "cue" || !this._isFollowingMouse) return;
+        // set cue ball position to mouse position 
+        this.location = Input.getMousePosition();
+        this._isFollowingMouse = false;
+        // reset the cue and re-enable it
+        let _c: Cue = Game.getTable().getCue();
+        _c.setVisible(true);
+        _c.resetCue();
+        ClientSocket.sendCueBallPositon(this.location.getX(), this.location.getY());
+    }
+
     show(): void {
         Canvas.drawCircle(this.location.getX(), this.location.getY(), Ball.R, this.getColorBasedOnType());
     }
@@ -82,14 +95,15 @@ export class Ball implements Sprite {
     update(self: any): void {
 
         let _self: Ball = <Ball>self;
+        let v: Vector = _self.location;
 
         // ball in hand logic
         if (_self._isFollowingMouse) {
             _self.location = Input.getMousePosition();
+            Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
             return;
         }
 
-        let v: Vector = _self.location;
         let _t: Table = Game.getTable();
 
         if (_self._moving) {
@@ -104,10 +118,12 @@ export class Ball implements Sprite {
                 _self.setVisible(false);
                 console.log("pocketed");
                 GameLogic.handlePocketedBall(_self);
-                if (_self.type === "cue") {
+                if (_self.type === "cue" && GameLogic.isMyTurn()) {
+                    console.log("scratched");
                     _self.setFollowMouse(true);
                     _self.setVisible(true);
-                    GameLogic.handleScratch();
+                    // temporarily disable the cue
+                    _t.getCue().setVisible(false);
                 }
             }
 
@@ -115,7 +131,7 @@ export class Ball implements Sprite {
                 _self._moving = false;
                 _self._velocity = new Vector(0,0);
                 _self._protectedBall = null;
-                if (_self.type === "cue") _t.getCue().resetCue();
+                if (!GameLogic.areBallsMoving()) _t.getCue().resetCue();
                 // send to game logic
             }
 

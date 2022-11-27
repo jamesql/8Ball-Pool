@@ -10,6 +10,7 @@ import EventLoop from './util/EventLoop';
 import { _listener, ballType } from './util/Types';
 import { Rail } from './Rail';
 import { Physics } from './util/Physics';
+import { GameLogic } from './GameLogic';
 
 export default class Table implements Sprite {
     visible: boolean;
@@ -87,6 +88,13 @@ export default class Table implements Sprite {
         }
     }
 
+    public removeBall(_b: Ball) {
+        let index = this._balls.indexOf(_b);
+        if (index > -1) {
+            this._balls.splice(index, 1);
+        }
+    }
+
     public areBallsMoving() : boolean {
         for (let i = 0; i < this._balls.length; i++) {
             if (this._balls[i].isMoving()) {
@@ -102,6 +110,10 @@ export default class Table implements Sprite {
 
     public getCurrentPlayerBallType() : ballType {
         return this._currentPlayer.getBallType();
+    }
+
+    public getBalls() : Ball[] {
+        return this._balls;
     }
 
     public switchTurns() {
@@ -120,7 +132,7 @@ export default class Table implements Sprite {
                 // collision
                 if (this._balls[i].equals(_b._protectedBall)) continue;
                 console.log("collision");
-                
+                GameLogic.setFirstContact(this._balls[i]);
 
                 // calculate the angle between the two balls
                 let angle = _b.location.angle(this._balls[i].location);

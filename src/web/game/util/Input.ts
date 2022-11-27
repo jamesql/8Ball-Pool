@@ -1,6 +1,7 @@
 import { Vector } from "./Vector2D";
 import { Buttons } from './Buttons';
 import { Keys } from './Keys';
+import { Game } from '../Game';
 
 export class Input {
     static _mouseX: number = 0;
@@ -18,6 +19,8 @@ export class Input {
         window.addEventListener("mousedown", (e: MouseEvent) => {
             let v = this.getMousePosition();
             Buttons.mouseClick(v);
+            // send to cue ball
+            Game.getTable().getCueBall().onBallinHandClick();
         });
     }   
 

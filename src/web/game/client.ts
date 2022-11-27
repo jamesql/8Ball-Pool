@@ -93,6 +93,19 @@ export class ClientSocket {
                 GameLogic.updateLobbyState(d.lobby);
                 break;
             }
+
+            case OPCodes.SET_CUEBALL_POS_RES: {
+                const {d} = dt;
+                GameLogic.updateLobbyState(d.lobby);
+                GameLogic.setCueBallPosition(d.x, d.y);
+                break;
+            }
+
+            case OPCodes.END_OF_GAME_RES: {
+                const {d} = dt;
+                GameLogic.restart();
+                break;
+            }
         }
     }
 
@@ -142,6 +155,18 @@ export class ClientSocket {
         });
     }
 
+    static async sendCueBallPositon(x: number, y: number) {
+        await this.sendMsg({
+            op: OPCodes.SET_CUEBALL_POS_REQ,
+            d: {
+                x: x,
+                y: y,
+                lobby: GameLogic.getLobby(),
+                username: this.username
+            }
+        });
+    }
+
     static async refreshLobbys() {
         await this.sendMsg({
             op: OPCodes.GET_LOBBY_REQ,
@@ -185,8 +210,19 @@ export class ClientSocket {
         await this.sendMsg({
             op: OPCodes.GAME_STATE_UPDATE_REQ,
             d: {
-                lobby_id: lobby.id
+                lobby: lobby
             }
         });
     }
+
+    static async endGame(lobby: Lobby) {
+        await this.sendMsg({
+            op: OPCodes.END_OF_GAME_REQ,
+            d: {
+                lobby: lobby,
+                username: this.username
+            }
+        });
+    }
+
 }
