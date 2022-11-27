@@ -57,6 +57,10 @@ export class Ball implements Sprite {
         return this.type === _b.type && this.location.equals(_b.location);
     }
 
+    public isMoving() : boolean {
+        return this._moving;
+    }
+
     public setVelocity(_velocity: Vector) : void {
         this._velocity = _velocity;
         this._moving = true;
@@ -99,6 +103,7 @@ export class Ball implements Sprite {
                 _self._velocity = new Vector(0,0);
                 _self.setVisible(false);
                 console.log("pocketed");
+                GameLogic.handlePocketedBall(_self);
                 if (_self.type === "cue") {
                     _self.setFollowMouse(true);
                     _self.setVisible(true);

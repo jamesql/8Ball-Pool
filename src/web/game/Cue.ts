@@ -9,6 +9,7 @@ import { Keys } from "./util/Keys";
 import { Ball } from "./Ball";
 import { Game } from "./Game";
 import { ClientSocket } from './client';
+import { GameLogic } from './GameLogic';
 
 export class Cue implements Sprite {
     visible: boolean;
@@ -24,6 +25,8 @@ export class Cue implements Sprite {
     _powerDown: _key;
     _angle: number;
     _lastShotPosition: Vector;
+    _hasShot = false;
+    _savedShot: _shotReplay;
 
     private static cueOffset = 2.36;
 
@@ -43,22 +46,28 @@ export class Cue implements Sprite {
         _this._lastShotPosition = _this.location.clone();
         let _velocity = new Vector(_this._power * Math.cos(_this._angle), _this._power * Math.sin(_this._angle));
 
-        // cueBallVelo
-        // Power
-        // Angle
-        // Relative
-
         let _shot: _shotReplay = {
             _relative: _this._relative.clone(),
             _cuePower: _this._power,
             _cueAngle: _this._angle,
             _cueBallVelocity: _velocity.clone(),
         }
-        await ClientSocket.sendShot(_shot);
+        _this._savedShot = _shot;
+        _this._hasShot = true;
 
+        // reset cue position and power, set cueball velocity
         _this._power = 0;
         _this._tipPosition = new Vector(_this.location.getX() + _this._relative.getX(), _this.location.getY() + _this._relative.getY());
         _this._relative = new Vector(0,0);
+        let cueBall: Ball = Game.getTable().getCueBall();
+        cueBall.setVelocity(_velocity);
+    }
+
+    public async localShoot() {
+        let _velocity = new Vector(this._power * Math.cos(this._angle), this._power * Math.sin(this._angle));
+
+        this._power = 0;
+        this._relative = new Vector(0,0);
         let cueBall: Ball = Game.getTable().getCueBall();
         cueBall.setVelocity(_velocity);
     }
@@ -67,7 +76,14 @@ export class Cue implements Sprite {
         this._relative = new Vector(-15,-15);
         this._power = 0;
         Cue._cueBallPosition = Game.getTable().getCueBall().location.clone();
+    }
 
+    public setShot(_shot: _shotReplay) {
+        this._relative = _shot._relative;
+        this._power = _shot._cuePower;
+        this._angle = _shot._cueAngle;
+
+        this.localShoot();
     }
 
     public increasePower(_obj: any) {
@@ -122,6 +138,26 @@ export class Cue implements Sprite {
     }
     update(self: any): void {
         let _self: Cue = self as Cue;
+
+        // disable movement if it is not our turn
+        if(GameLogic.isMyTurn())
+            Input.enable();
+        else {
+            Input.disable();
+            return;
+        }
+
+        if (_self._hasShot) {
+
+            if (!GameLogic.areBallsMoving())
+            {
+                _self._hasShot = false;
+                GameLogic.handleShot(_self._savedShot);
+            }
+
+            return;
+        }
+
         let x = Input._mouseX;
         let y = Input._mouseY;
         let cueball_x = Cue._cueBallPosition.getX();

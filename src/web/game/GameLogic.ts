@@ -5,6 +5,9 @@ import Table from './Table';
 import { Lobby } from './Lobby';
 import { ClientSocket } from './client';
 import { LobbyState } from 'server/util/WSValues';
+import { _shotReplay } from './util/Types';
+import { Buttons } from './util/Buttons';
+import { Cue } from './Cue';
 export class GameLogic {
 
     private static _isTableOpen: boolean = true;
@@ -12,14 +15,17 @@ export class GameLogic {
     private static _game: Game;
     private static _table: Table;
     private static _lobbyState: Lobby = new Lobby();
+    private static _pocketedBalls: Ball[] = [];
 
     static async startGame() : Promise<void> {
         GameLogic._isTableOpen = true;
         GameLogic._isGameOver = false;
 
         if (this.isHost()) await ClientSocket.startGame(this._lobbyState);
-        
+        Buttons.clear();
+
         Game.init();
+        this._table = Game.getTable();
     }
 
     static updateLobbyState(_l: Lobby) : void {
@@ -30,9 +36,25 @@ export class GameLogic {
         ClientSocket.createLobby();
     }
         
+    static areBallsMoving(): boolean {
+        return this._table.areBallsMoving();
+    }
 
-    static handleShot() : void {
+    static async handleShot(shot: _shotReplay) : Promise<void> {
+        if (this._pocketedBalls.length === 0) this._lobbyState.p_turn = this._lobbyState.p_turn === 'host' ? 'opponent' : 'host';
+        
+        await ClientSocket.sendShot(shot);
+        this.clearPocketedBalls();
+    }
 
+    static clearPocketedBalls() : void {
+        this._pocketedBalls = [];
+    }
+
+    static sendShot(shot: _shotReplay) : void {
+        console.log(shot);
+        let cue: Cue = this._table.getCue();
+        cue.setShot(shot);
     }
 
     static isLegalShot(): boolean {
@@ -40,7 +62,7 @@ export class GameLogic {
     }
 
     static handlePocketedBall(ball: Ball) : void {
-
+        this._pocketedBalls.push(ball);
     }
 
     static handleScratch() : void {
@@ -73,6 +95,18 @@ export class GameLogic {
     
     static isHost(): boolean {
         return this._lobbyState.amIHost();
+    }
+
+    static isMyTurn(): boolean {
+        return this._lobbyState.p_turn === 'host' ? this.isHost() : !this.isHost();
+    }
+
+    static getLobbyId(): string {
+        return this._lobbyState.id;
+    }
+
+    static getLobby(): LobbyState {
+        return this._lobbyState;
     }
     
 }

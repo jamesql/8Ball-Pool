@@ -9,7 +9,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
     let data;
 
     try { data = JSON.parse(payload.toString()); }
-    catch (e) { data = null; console.log(e); console.log(payload)}
+    catch (e) { data = null; console.log(e); console.log(payload) }
 
     if (data === null) return skt.close();
 
@@ -55,7 +55,14 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
 
             lobby.opponent = u;
 
-            skt.sendAsync({
+            await lobby.host.skt.sendAsync({
+                op: OPCodes.JOIN_LOBBY_RES,
+                d: {
+                    lobby: lobby
+                }
+            });
+
+            await skt.sendAsync({
                 op: OPCodes.JOIN_LOBBY_RES,
                 d: {
                     lobby: lobby
@@ -69,11 +76,12 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             const _l = d.lobby;
             const lobby = await Network.getLobby(_l.id);
 
+            // rewrite so we only send to the other user in the lobby
             await lobby.host.skt.sendAsync({
                 op: OPCodes.GAME_STATE_UPDATE_RES,
                 d: {
                     lobby: lobby
-            }
+                }
             });
 
             if (lobby.opponent !== null) {
@@ -108,6 +116,32 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
 
         case OPCodes.GAME_SHOT_REQ: {
             const { d } = data;
+
+            const u = await Network.getUserByUsername(d.username);
+            const lobby: LobbyState = await Network.getLobby(d.lobby.id);
+
+            const other = lobby.host.id === u.id ? lobby.opponent : lobby.host;
+
+            // update the lobby
+            const _l: LobbyState = d.lobby;
+            lobby.p_turn = _l.p_turn;
+            lobby.o_type = _l.o_type;
+            lobby.h_type = _l.h_type;
+
+            const shot = d.shot;
+            await other.skt.sendAsync({
+                op: OPCodes.GAME_SHOT_RES,
+                d: {
+                    shot: {
+                        _relative: shot._relative,
+                        _cueAngle: shot._cueAngle,
+                        _cuePower: shot._cuePower,
+                        _cueBallVelocity: shot._cueBallVelocity,
+                    },
+                    lobby: lobby
+                }
+            });
+
             break;
         }
 
@@ -115,7 +149,6 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             const { d } = data;
             const uName = d.username;
             const user: User = await Network.getUserByUsername(uName);
-            console.log(user);
             const _lobby: LobbyState = {
                 id: Math.random().toString(36),
                 host: user,

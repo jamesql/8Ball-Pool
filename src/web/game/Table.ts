@@ -69,10 +69,6 @@ export default class Table implements Sprite {
         this._pockets.push(new Pocket(810, 840, "middle"));
         this._pockets.push(new Pocket(1480, 130, "corner"));
         this._pockets.push(new Pocket(1480, 815, "corner"));
-
-
-
-
     }
 
     public getCue() : Cue {
@@ -89,6 +85,15 @@ export default class Table implements Sprite {
                 return true;
             }
         }
+    }
+
+    public areBallsMoving() : boolean {
+        for (let i = 0; i < this._balls.length; i++) {
+            if (this._balls[i].isMoving()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public getCurrentPlayer() : Player {
@@ -165,7 +170,7 @@ export default class Table implements Sprite {
     }
     update(self: any): void {
         Canvas.clear();
-        Canvas.drawImage(getImage("./assets/pool_table.jpg"), 0, 0, 1600, 900);
+        Canvas.drawImage((<Table>self).image, 0, 0, 1600, 900);
     }
 
 

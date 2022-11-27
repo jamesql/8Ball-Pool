@@ -47,6 +47,10 @@ export class Menu {
         Buttons.createButton("joinLobby", points2, Menu.drawLobbys, true);
     }
 
+    static alertJoin() : void {
+        alert("User has joined the lobby, press start when ready!");
+    }
+
     static drawLobby(): void {
         Buttons.clear();
         Canvas.clear();

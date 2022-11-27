@@ -2,7 +2,7 @@
 
 import { _shotReplay } from "./util/Types";
 import { LobbyState, OPCodes } from '../../server/util/WSValues';
-import { Lobby } from "./Lobby";
+import { Lobby } from './Lobby';
 import { GameLogic } from "./GameLogic";
 
 export class ClientSocket {
@@ -66,7 +66,10 @@ export class ClientSocket {
             case OPCodes.JOIN_LOBBY_RES: {
                 const {d} = dt;
                 let _l: LobbyState = d.lobby;
+
+                
                 GameLogic.updateLobbyState(d.lobby);
+
                 break;
             }
 
@@ -80,6 +83,14 @@ export class ClientSocket {
                 const {d} = dt;
                 GameLogic.updateLobbyState(d.lobby);
                 await GameLogic.startGame();
+                break;
+            }
+
+            case OPCodes.GAME_SHOT_RES: {
+                const {d} = dt;
+                console.log(d.lobby);
+                GameLogic.sendShot(d.shot);
+                GameLogic.updateLobbyState(d.lobby);
                 break;
             }
         }
@@ -123,7 +134,11 @@ export class ClientSocket {
     static async sendShot(shot: _shotReplay) {
         await this.sendMsg({
             op: OPCodes.GAME_SHOT_REQ,
-            d: shot
+            d: {
+                shot: shot,
+                lobby: GameLogic.getLobby(),
+                username: this.username,
+            }
         });
     }
 
@@ -160,6 +175,15 @@ export class ClientSocket {
     static async startGame(lobby: Lobby) {
         await this.sendMsg({
             op: OPCodes.START_GAME_REQ,
+            d: {
+                lobby_id: lobby.id
+            }
+        });
+    }
+
+    static async updateGameState(lobby: Lobby) {
+        await this.sendMsg({
+            op: OPCodes.GAME_STATE_UPDATE_REQ,
             d: {
                 lobby_id: lobby.id
             }
