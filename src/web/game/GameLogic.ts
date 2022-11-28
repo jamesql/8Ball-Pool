@@ -11,6 +11,7 @@ import { Cue } from './Cue';
 import { Vector } from './util/Vector2D';
 export class GameLogic {
 
+    // private variables
     private static _isTableOpen: boolean = true;
     private static _isGameOver: boolean = false;
     private static _game: Game;
@@ -19,10 +20,12 @@ export class GameLogic {
     private static _pocketedBalls: Ball[] = [];
     private static _firstContact: Ball = null;
 
+    // start the game
     static async startGame() : Promise<void> {
         GameLogic._isTableOpen = true;
         GameLogic._isGameOver = false;
 
+        // ch
         if (this.isHost()) await ClientSocket.startGame(this._lobbyState);
         Buttons.clear();
 
@@ -46,13 +49,17 @@ export class GameLogic {
         return this._table.areBallsMoving();
     }
 
+    // refresh the page
     static restart(): void {
         window.location.reload();
     }
 
+    // handle game logic after a shot
     static async handleShot(shot: _shotReplay) : Promise<void> {
+        // end the turn if needed
         if (this._pocketedBalls.length === 0 || this.pocketedBallIncludeCueBall()) this._lobbyState.p_turn = this._lobbyState.p_turn === 'host' ? 'opponent' : 'host';
 
+        // update the lobby on what happened
         await ClientSocket.sendShot(shot);
 
         // end game
@@ -80,10 +87,12 @@ export class GameLogic {
             }
         }
 
+        // reset ball history
         this.clearPocketedBalls();
         this._firstContact = null;
     }
 
+    // get the opposite type of ball
     static getOpposite(type: "solid"|"stripe"|"none"): "solid"|"stripe"|"none" {
         switch (type) {
             case "solid":
@@ -113,6 +122,7 @@ export class GameLogic {
         this._pocketedBalls = [];
     }
 
+    // show the shot from other user
     static sendShot(shot: _shotReplay) : void {
         let cue: Cue = this._table.getCue();
         cue.setShot(shot);
@@ -122,6 +132,7 @@ export class GameLogic {
         return true;
     }
 
+    // add ball to pocketed balls array
     static handlePocketedBall(ball: Ball) : void {
         this._pocketedBalls.push(ball);
 
@@ -174,6 +185,7 @@ export class GameLogic {
         return this._lobbyState;
     }
 
+    // set the cueball position
     static setCueBallPosition(x: number, y: number) : void {
         let cueBall: Ball = this._table.getCueBall();
         cueBall.location = new Vector(x, y);

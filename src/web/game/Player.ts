@@ -1,5 +1,6 @@
 import { ballType } from "./util/Types";
 
+// this is never used
 export class Player {
 
     private ballType: ballType;

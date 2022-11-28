@@ -4,6 +4,7 @@ import { Circle } from './util/Circle';
 import { Canvas } from "./Graphics";
 import EventLoop from "./util/EventLoop";
 
+// this could extend circle instead
 export class Pocket {
     private _circle: Circle;
     private static _MIDDLE_RADIUS = 60;

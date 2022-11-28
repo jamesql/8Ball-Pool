@@ -1,11 +1,13 @@
 import { _listener } from "./Types";
 
 export default class EventLoop {
+    // private static variables
     private static _listeners: Array<_listener> = [];
     private static _instance: EventLoop;
     private static _timeout: NodeJS.Timeout;
     private static _running: boolean = true;
 
+    // start the loop
     constructor() {
         if (!EventLoop._instance) {
             EventLoop._instance = this;
@@ -28,6 +30,7 @@ export default class EventLoop {
         return listener;
     }
 
+    // change if a listener is running
     public static setListener(listener: _listener, active: boolean): void {
         let index = this._listeners.indexOf(listener);
         if (index > -1) {
@@ -39,11 +42,13 @@ export default class EventLoop {
         this._listeners.splice(this._listeners.indexOf(listener), 1);
     }
 
+    // run all listeners
     public static run(): void {
         if (!this._running) return;
         this._listeners.forEach(listener => listener.function(listener.self));
     }
 
+    // stop or start the loop
     public static setRunning(running: boolean): void {
         this._running = running;
     }

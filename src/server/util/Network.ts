@@ -52,6 +52,7 @@ export class Network {
         return this._lobbys.find(l => l.host.id === id);
     }
 
+    // get lobbies that are waiting for an opponent
     public static getWaitingLobbys(): LobbyState[] {
         return this._lobbys.filter(l => l.opponent === null);
     }

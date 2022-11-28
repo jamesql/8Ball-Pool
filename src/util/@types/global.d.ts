@@ -1,5 +1,6 @@
 export {};
 
+// Global tyoes
 declare global {
         namespace Socket {
             type Server = import("ws").Server;

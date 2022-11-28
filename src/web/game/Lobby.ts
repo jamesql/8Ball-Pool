@@ -1,5 +1,6 @@
 import { LobbyState, User } from 'server/util/WSValues';
 import { ClientSocket } from './client';
+// Lobby wrapper for LobbyState
 export class Lobby implements LobbyState {
     id: string;
     host: User;
@@ -17,6 +18,7 @@ export class Lobby implements LobbyState {
         return this.host.username === ClientSocket.getUsername();
     }
 
+    // update data
     public updateLobby(lobby: LobbyState) {
         this.id = lobby.id;
         this.host = lobby.host;

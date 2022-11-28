@@ -1,5 +1,6 @@
 import { _key } from './Types';
 export class Keys {
+    // create keyMapping
     private static keyMap: _key[] = [];
 
     constructor() {
@@ -30,10 +31,12 @@ export class Keys {
         return Keys.keyMap.filter(k => k.active);
     }
 
+    // get an active key
     public static getActiveKey(keyString: string): _key {
         return Keys.getActiveKeys().find(k => k.key === keyString);
     }
 
+    // trigger a key
     public static async keyboardClick(keyString: string) {
         let _k = Keys.getActiveKey(keyString);
         if (_k) await _k.onDown(_k.obj);

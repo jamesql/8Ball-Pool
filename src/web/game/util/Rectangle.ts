@@ -49,6 +49,8 @@ export class Rectangle {
         return this._y + this._height;
     }
 
+    // contains and containsVector are the same but one takes a vector and the other takes x and y
+    // i should probably do somehting about that
     public contains(_x: number, _y: number): boolean {
         return _x >= this.left && _x <= this.right && _y >= this.top && _y <= this.bottom;
     }
@@ -59,9 +61,5 @@ export class Rectangle {
 
     public containsRectangle(_r: Rectangle): boolean {
         return this.contains(_r.left, _r.top) && this.contains(_r.right, _r.bottom);
-    }
-
-    public intersects(_r: Rectangle): boolean {
-        return this.contains(_r.left, _r.top) || this.contains(_r.right, _r.bottom);
     }
 }

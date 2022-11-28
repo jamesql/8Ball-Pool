@@ -69,21 +69,25 @@ export class Vector {
         return this.x * v.getX() + this.y * v.getY();
     }
 
+    // multiply but return a new vector
     public multiplyClone(n: number) : Vector {
         return new Vector(this.x * n, this.y * n);
     }
 
+    // scale vector by a scaler
     public scale(s: number): void {
         this.x *= s;
         this.y *= s;
     }
 
+    // get unit vector
     public normalize(): void {
         let m: number = this.getMagnitude();
         this.x /= m;
         this.y /= m;
     }
 
+    // get the angle between this vector and another vector
     public angle(v: Vector): number {
         return Math.acos(this.dot(v) / (this.getMagnitude() * v.getMagnitude()));
     }
@@ -93,12 +97,6 @@ export class Vector {
         let y: number = this.y;
         this.x = x * Math.cos(angle) - y * Math.sin(angle);
         this.y = x * Math.sin(angle) + y * Math.cos(angle);
-    }
-
-    public getUnitVector(): Vector {
-        let v: Vector = this.clone();
-        v.normalize();
-        return v;
     }
 
 }

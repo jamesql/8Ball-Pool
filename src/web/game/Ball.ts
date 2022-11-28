@@ -22,7 +22,9 @@ export class Ball implements Sprite {
     _protectedBall: Ball = null;
     _isFollowingMouse: boolean = false;
 
+    // friction constant 
     private static F: number = 0.018;
+    // ball radius
     private static R: number = 18;
 
     constructor(_location: Vector, _type: ballType) {
@@ -92,12 +94,14 @@ export class Ball implements Sprite {
         this._event = EventLoop.addListener({id: "ball", function: this.update, active: true, self: this});
         
     }
+    // called everyframe
     update(self: any): void {
 
         let _self: Ball = <Ball>self;
         let v: Vector = _self.location;
 
         // ball in hand logic
+        // set location of the ball to the mouse position
         if (_self._isFollowingMouse) {
             _self.location = Input.getMousePosition();
             Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
@@ -106,18 +110,24 @@ export class Ball implements Sprite {
 
         let _t: Table = Game.getTable();
 
+        // check ball physics and game logic
         if (_self._moving) {
+            // calculate new velocity after friction
             _self._velocity.scalarMultiply(1 - Ball.F);
             v.add(_self._velocity);
             _self.location = v;
 
+            // check collisions with other balls
             _t.checkForCollisions(_self);
 
+            // check if a ball is pocketed
             if (_t.isBallInPocket(_self)) {
+                // stop ball
                 _self._velocity = new Vector(0,0);
                 _self.setVisible(false);
                 console.log("pocketed");
                 GameLogic.handlePocketedBall(_self);
+                // check if ball is cue ball
                 if (_self.type === "cue" && GameLogic.isMyTurn()) {
                     console.log("scratched");
                     _self.setFollowMouse(true);
@@ -127,6 +137,7 @@ export class Ball implements Sprite {
                 }
             }
 
+            // check if a ball has stopped moving
             if (_self._velocity.getMagnitude() < 0.1) {
                 _self._moving = false;
                 _self._velocity = new Vector(0,0);
@@ -136,6 +147,8 @@ export class Ball implements Sprite {
             }
 
         }
+
+        // draw ball
         if (_self.visible)
         Canvas.drawCircle(v.getX(), v.getY(), Ball.R, _self.getColorBasedOnType());
     }

@@ -35,6 +35,7 @@ export default class Table implements Sprite {
         this._cue = new Cue();
     }
 
+    // rack the balls - this could be done with a loop but I never got to it
     public rackBalls() {
         this._balls.push(new Ball(new Vector(475, 475), "cue"));
         this._balls.push(new Ball(new Vector(1145,475), "solid"));
@@ -54,6 +55,7 @@ export default class Table implements Sprite {
         this._balls.push(new Ball(new Vector(1145+35*4, 475-80), "solid"));
     }
 
+    // this can be automated
     public createRails() {
         this._rails.push(new Rail(195, 130, 570, 25, "top"));
         this._rails.push(new Rail(850, 130, 570, 25, "top"));
@@ -63,6 +65,7 @@ export default class Table implements Sprite {
         this._rails.push(new Rail(1450, 180, 25, 570, "right"));
     }
 
+    // create the pockets
     public createPockets() {
         this._pockets.push(new Pocket(140, 115, "corner"));
         this._pockets.push(new Pocket(810, 93, "middle"));
@@ -88,6 +91,8 @@ export default class Table implements Sprite {
         }
     }
 
+
+    // remove a ball, this fixes some issues with ghost balls blocking pockets
     public removeBall(_b: Ball) {
         let index = this._balls.indexOf(_b);
         if (index > -1) {
@@ -95,6 +100,7 @@ export default class Table implements Sprite {
         }
     }
 
+    // check if any balls are moving
     public areBallsMoving() : boolean {
         for (let i = 0; i < this._balls.length; i++) {
             if (this._balls[i].isMoving()) {
@@ -104,10 +110,12 @@ export default class Table implements Sprite {
         return false;
     }
 
+    // not used
     public getCurrentPlayer() : Player {
         return this._currentPlayer;
     }
 
+    // not used
     public getCurrentPlayerBallType() : ballType {
         return this._currentPlayer.getBallType();
     }
@@ -116,6 +124,7 @@ export default class Table implements Sprite {
         return this._balls;
     }
 
+    // not sure if this is ever used
     public switchTurns() {
         if (this._currentPlayer === this._players[0]) {
             this._currentPlayer = this._players[1];
@@ -124,6 +133,7 @@ export default class Table implements Sprite {
         }
     }
 
+    // check if a ball is colliding iwth a rail or ball
     public checkForCollisions(_b: Ball) : void {
         // check for collisions with other balls
         for (let i = 0; i < this._balls.length; i++) {
@@ -180,6 +190,7 @@ export default class Table implements Sprite {
         this.show();
         this._event = EventLoop.addListener({id: "table", function: this.update, active: true, self: this});
     }
+    // reset image
     update(self: any): void {
         Canvas.clear();
         Canvas.drawImage((<Table>self).image, 0, 0, 1600, 900);

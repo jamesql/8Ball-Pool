@@ -7,6 +7,7 @@ import { GameLogic } from './GameLogic';
 import { Lobby } from './Lobby';
 import { LobbyState } from 'server/util/WSValues';
 
+// this is built pretty basic, but it works
 export class Menu {
 
     constructor() {
@@ -26,6 +27,7 @@ export class Menu {
         }).bind(this));
     }
 
+    // inital screen to join or host a lobby
     joinOrHost(): void {
         Canvas.clear();
         Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
@@ -47,15 +49,18 @@ export class Menu {
         Buttons.createButton("joinLobby", points2, Menu.drawLobbys, true);
     }
 
+    // never used - prob fix
     static alertJoin() : void {
         alert("User has joined the lobby, press start when ready!");
     }
 
+    // draw the lobby screen, this can be better
     static drawLobby(): void {
         Buttons.clear();
         Canvas.clear();
         Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
 
+        // if host give them the option to start the game
         if (GameLogic.isHost()) {
             Canvas.drawRect(100, 100, 300, 50, 'white');
             Canvas.drawText(150, 135, 'Start Game', 'black', '30px Arial');
@@ -63,6 +68,7 @@ export class Menu {
             let points = getCornerPoints(100,100,300,50);
             Buttons.createButton("startGame", points, async () => {
                 Canvas.clear();
+                // start the game
                 await GameLogic.startGame();
             }, true);
         } else {
@@ -70,6 +76,7 @@ export class Menu {
         }
     }
 
+    // draw available lobbys, this also can be better
     static async drawLobbys() : Promise<void> {
         Buttons.clear();
         Canvas.clear();
@@ -82,7 +89,7 @@ export class Menu {
         Canvas.drawImage(getImage("./assets/menu_bg.jpg"), 0, 0, 1600, 900);
 
         let lobbys = await ClientSocket.getListOfLobbys();
-        //console.log(lobbys);
+        // create a new button for each lobby
         for (let i = 0; i < lobbys.length; i++) {
             let lobby = lobbys[i];
             Canvas.drawRect(curX, curY, width, height, 'white');
@@ -96,10 +103,12 @@ export class Menu {
         }
     }
 
+    // add the canvas html
     drawCanvas(): void {
         document.body.innerHTML = "<canvas id='game' width='1600' height='900'></canvas>" + document.body.innerHTML;
     }
 
+    // triggered when game starts
     public startGame(): void {
         Canvas.clear();
         Game.init();

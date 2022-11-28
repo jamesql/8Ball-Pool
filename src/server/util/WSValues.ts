@@ -1,3 +1,4 @@
+// Client and server OPCodes
 export const OPCodes = {
     HELLO: 0,
     HEARTBEAT: 1,
@@ -22,6 +23,7 @@ export const OPCodes = {
     ERROR: 20,
 } as const;
 
+// not used
 export const HEARTBEAT_INTERVAL = 6e4 as const;
 
 export interface User {

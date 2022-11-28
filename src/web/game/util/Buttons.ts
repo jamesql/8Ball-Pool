@@ -1,6 +1,9 @@
 import { _button } from './Types';
 import { Vector } from './Vector2D';
+
+// this could probably just extend Rectangle
 export class Buttons {
+    // create static list
     private static _buttons: _button[] = [];
 
     constructor() {
@@ -39,6 +42,7 @@ export class Buttons {
         return this._buttons.filter(b => !b.active);
     }
 
+    // create a button
     public static createButton(id: string, points: Vector[], onClick: () => void, active: boolean = true) : void {
         let _b: _button = {
             id: id,
@@ -49,6 +53,7 @@ export class Buttons {
         this.addButton(_b);
     }
 
+    // see if the mouse click was inside a active button
     public static mouseClick(v: Vector) {
         this.getActiveButtons().forEach(b => {
             console.log(b);
@@ -58,6 +63,7 @@ export class Buttons {
         });
     }
 
+    // check if vector is inside button box
     public static isInside(v: Vector, points: Vector[]): boolean {
         let x = v.getX();
         let y = v.getY();

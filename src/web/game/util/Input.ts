@@ -8,6 +8,7 @@ export class Input {
     static _mouseY: number = 0;
     private static _enabled: boolean = true;
 
+    // create window listensers for mouse and keyboard
     public static init(): void {
         window.addEventListener("keydown", this.isKeyDown.bind(this));
         window.addEventListener("mousemove", (e: MouseEvent) => {

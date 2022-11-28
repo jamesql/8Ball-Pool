@@ -6,10 +6,12 @@ import { Vector } from "./Vector2D";
 export class Physics {
     
 
+    // calculate the new velocity of a ball after a collision with the reil
     static getExitVelo(_b: Ball, _r: Rail): Vector {
         let t = _r.railType;
         let v = _b._velocity;
 
+        // comes from angle of incidence = angle of reflection
         switch(t) {
             case "top":
                 return new Vector(v.getX(), -v.getY());

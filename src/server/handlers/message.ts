@@ -5,16 +5,20 @@ import * as ws from "ws";
 import { OPCodes, User, LobbyState } from '../util/WSValues';
 import { Network } from '../util/Network';
 
+// Control messages from client
 export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: IncomingMessage, payload: ws.RawData) => {
     let data;
 
+    // make sure payload is valid
     try { data = JSON.parse(payload.toString()); }
     catch (e) { data = null; console.log(e); console.log(payload) }
 
+    // close connection
     if (data === null) return skt.close();
 
     switch (data.op) {
 
+        // inital auth (response from HELLO packet)
         case OPCodes.AUTH: {
             const { d } = data;
             const u = d.u;
@@ -28,6 +32,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
 
             skt.props.username = u;
 
+            // send active lobbies along with the READY Packet
             skt.sendAsync({
                 op: OPCodes.READY,
                 d: {
@@ -37,6 +42,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // send active lobbies to the client
         case OPCodes.GET_LOBBY_REQ: {
             const { d } = data;
             skt.sendAsync({
@@ -48,6 +54,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // join a lobby
         case OPCodes.JOIN_LOBBY_REQ: {
             const { d } = data;
             const l = d.lobby_id;
@@ -72,6 +79,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // transfer game information to other player
         case OPCodes.GAME_STATE_UPDATE_REQ: {
             const { d } = data;
             const _l = d.lobby;
@@ -96,6 +104,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // start a lobbies game
         case OPCodes.START_GAME_REQ: {
             const { d } = data;
             const _l = d.lobby_id;
@@ -115,6 +124,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // send shot to other player
         case OPCodes.GAME_SHOT_REQ: {
             const { d } = data;
 
@@ -129,6 +139,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             lobby.o_type = _l.o_type;
             lobby.h_type = _l.h_type;
 
+            // send shot with updated game state
             const shot = d.shot;
             await other.skt.sendAsync({
                 op: OPCodes.GAME_SHOT_RES,
@@ -146,6 +157,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // create a lobby
         case OPCodes.CREATE_LOBBY_REQ: {
             const { d } = data;
             const uName = d.username;
@@ -160,6 +172,7 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
                 o_type: "none"
             }
 
+            // add to the netowrk
             await Network.addLobby(_lobby);
 
             skt.sendAsync({
@@ -171,11 +184,13 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // set the new cueball position after a scratch
         case OPCodes.SET_CUEBALL_POS_REQ: {
             const { d } = data;
             const u = await Network.getUserByUsername(d.username);
             const lobby: LobbyState = await Network.getLobby(d.lobby.id);
 
+            // find other player
             const other = lobby.host.id === u.id ? lobby.opponent : lobby.host;
 
             // send new cue ball position to other player
@@ -191,11 +206,13 @@ export default (async (ws: Socket.SocketServer, skt: Socket.SocketClient, rq: In
             break;
         }
 
+        // end the game
         case OPCodes.END_OF_GAME_REQ: {
             const { d } = data;
             const u = await Network.getUserByUsername(d.username);
             const lobby: LobbyState = await Network.getLobby(d.lobby.id);
             
+            // find other player
             const other = lobby.host.id === u.id ? lobby.opponent : lobby.host;
 
             // send END_OF_GAME_RES to other player

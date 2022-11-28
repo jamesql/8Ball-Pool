@@ -1,4 +1,6 @@
 import { Vector } from './Vector2D';
+
+// basic circle class used for pockets and balls
 export class Circle {
     private x: number
     private y: number
@@ -34,10 +36,12 @@ export class Circle {
         this.radius = n;
     }
 
+    // check if a vector is sinde the circle
     public isInside(v: Vector): boolean {
         let x = v.getX();
         let y = v.getY();
 
+        // check if distance between vector and circle center is less than radius
         let distance = Math.sqrt((x - this.x) * (x - this.x) + (y - this.y) * (y - this.y));
 
         return distance < this.radius;

@@ -3,6 +3,7 @@ import * as http from "http";
 
 const server = http.createServer();
 
+// start the server
 export async function start() {
     let s = await startServer(server);
 
