@@ -42,6 +42,7 @@ export class Cue implements Sprite {
     }
 
     public async shoot(self: any) {
+        // this explains the stuck bug https://www.youtube.com/watch?v=guWIF87CmBg
         let _this: Cue = self as Cue;
         _this._lastShotPosition = _this.location.clone();
         let _velocity = new Vector(_this._power * Math.cos(_this._angle), _this._power * Math.sin(_this._angle));
@@ -164,6 +165,7 @@ export class Cue implements Sprite {
         let cueball_y = Cue._cueBallPosition.getY();
 
         this.location = new Vector(x, y);
+        // https://www.gamedev.net/forums/topic/623513-using-atan2-to-find-an-angle-between-two-points/#:~:text=angle%20%3D%20atan2(y2%20%2D%20y1,made%20a%20pretty%20picture%20instead.
         _self._angle = Math.atan2(y-cueball_y, x-cueball_x);
 
         Canvas.drawImageRotationOrigin(_self.image, cueball_x, cueball_y, 700, 700, _self._angle+Cue.cueOffset, _self._relative.getX(), _self._relative.getY());
